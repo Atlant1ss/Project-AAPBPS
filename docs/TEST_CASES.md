@@ -5,10 +5,10 @@
 | Project | Ticket routing system for NexoTech Solutions |
 | Course | AI-Assisted Python for Business Problem Solving (PSI163), PUCPR, 2026/2 |
 | Indicator | ID1.2: conditional structures, repetition and functions, tested with different input values (Summative item 2.3) |
-| Based on | `docs/PROBLEM_ANALYSIS.md` v1.5, business rules BR0 to BR4 |
+| Based on | `docs/PROBLEM_ANALYSIS.md` v1.6, business rules BR0 to BR4 and the summary calculation (section 2.4) |
 | Code under test | `validations.py` → `clean_text()`, `is_missing()`; `calculations.py` → `get_queue()`, `get_deadline_hours()`, `route_ticket()`, `calculate_percentage()`; `main.py` → `format_deadline()`, the keyboard entry (`ask_yes_or_no()` from `validations.py`, `read_manual_ticket()`, `get_next_ticket_id()` from `calculations.py`) and the end-of-run summary (tickets from `sample_tickets.py`) |
-| Version | 1.5, 2026-10-12 (see section 8) |
-| Result | **All tests executed and passed:** 26/26 routing, 33/33 function, 5/5 keyboard, 7/7 summary checks (see section 9) |
+| Version | 1.6, 2026-10-12 (see section 8) |
+| Result | **All tests executed and passed:** 30/30 routing, 33/33 function, 5/5 keyboard, 7/7 summary checks (see section 9) |
 
 ---
 
@@ -34,7 +34,7 @@
    >>> from calculations import get_queue, get_deadline_hours, route_ticket, calculate_percentage, get_next_ticket_id
    >>> from main import format_deadline
    ```
-   The last import runs the whole program once, because `main.py` calls `main()` at the end. The program first asks "Add a ticket manually? (yes/no)": type `no`. It then prints its output, and after that `format_deadline()` is ready to test.
+   The last import runs the whole program once, because `main.py` calls `main()` at the end. The program first asks "Add a ticket manually? (yes/no)": type `no`. It then prints its output, and after that `format_deadline()` is ready to test. (If you type `yes` here, the typed ticket stays in the `tickets` list for the rest of the Python session, so FT31 would return 1017 instead of 1016. Restart Python to start again.)
 3. For each test, call the function with that test's input, exactly as written in the table. When a row shows two inputs (`calculate_percentage()`), pass them in that order, e.g. `calculate_percentage(3, 15)`. Write `None` without quotes for a missing value, and `""` for empty text. For example, with an input that is not in the tables:
    ```
    >>> route_ticket("Software", "HIGH")
@@ -83,6 +83,10 @@
 | TC24 | BR4 | Priority missing | Software | `None` | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
 | TC25 | BR3, BR4 | Category and priority both unknown | Printer | Urgent | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
 | TC26 | BR3, BR4 | Category and priority both missing | `None` | `None` | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
+| TC27 | BR0, BR1, BR2 | General in uppercase with spaces: still a valid category, so "Routed" (General vs. unknown boundary after cleaning) | `" GENERAL "` | Low | Triage | 72 | Routed | Triage / 72 / Routed | Yes |
+| TC28 | BR3, BR2 | Misspelled category (near miss of Access) | `"Acess"` | High | Triage | 4 | Needs review | Triage / 4 / Needs review | Yes |
+| TC29 | BR0, BR3, BR2 | Category with only spaces | `"   "` | Medium | Triage | 24 | Needs review | Triage / 24 / Needs review | Yes |
+| TC30 | BR4 | Misspelled priority (near miss of High) | Access | `"Hight"` | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
 
 ### 3.2 Individual functions
 
@@ -148,11 +152,11 @@ The course asks for each business rule to be tested with at least three differen
 
 | Rule | Tests | Different inputs tested |
 |---|---|---|
-| BR0: Input cleaning | TC15 to TC18, FT01 to FT04 | Lowercase, uppercase, extra spaces, `None`, a number |
-| BR1: Routing | TC01 to TC18, FT09 to FT14 | All 6 categories, each at least twice |
-| BR2: Deadline | TC01 to TC21, FT17 to FT19 | High (TC01, 04, 05, 09, 13, 17, 19), Medium (TC03, 07, 10, 12, 15, 18, 21), Low (TC02, 06, 08, 11, 14, 16, 20) |
-| BR3: Unknown category | TC19, TC20, TC21, TC25, TC26, FT15, FT16 | Unlisted value, `None`, empty text |
-| BR4: Unknown priority | TC22 to TC26, FT20, FT21 | Unlisted value, empty text, `None` |
+| BR0: Input cleaning | TC15 to TC18, TC27, TC29, FT01 to FT04 | Lowercase, uppercase, extra spaces, spaces only, `None`, a number |
+| BR1: Routing | TC01 to TC18, TC27, FT09 to FT14 | All 6 categories, each at least twice |
+| BR2: Deadline | TC01 to TC21, TC27 to TC29, FT17 to FT19 | High (TC01, 04, 05, 09, 13, 17, 19, 28), Medium (TC03, 07, 10, 12, 15, 18, 21, 29), Low (TC02, 06, 08, 11, 14, 16, 20, 27) |
+| BR3: Unknown category | TC19 to TC21, TC25, TC26, TC28, TC29, FT15, FT16 | Unlisted value, misspelled value, `None`, empty text, spaces only |
+| BR4: Unknown priority | TC22 to TC26, TC30, FT20, FT21 | Unlisted value, misspelled value, empty text, `None` |
 
 ### 4.2 By function
 
@@ -162,7 +166,7 @@ The course asks for each business rule to be tested with at least three differen
 | `is_missing()` | FT05 to FT08 | `main.py` output ("(missing)") |
 | `get_queue()` | FT09 to FT16 | Every TC test |
 | `get_deadline_hours()` | FT17 to FT21 | Every TC test |
-| `route_ticket()` | TC01 to TC26 | `main.py` run (section 5) |
+| `route_ticket()` | TC01 to TC30 | `main.py` run (section 5) |
 | `format_deadline()` | FT22 to FT25 | `main.py` output ("Deadline:" lines) |
 | `calculate_percentage()` | FT26 to FT30 | `main.py` summary percentages (section 5) |
 | `get_next_ticket_id()` | FT31 to FT33 | MT02, MT03, MT05 (the manual ticket gets ID 1016) |
@@ -178,7 +182,7 @@ Every queue is tested with every priority.
 | L1 Helpdesk | TC01, TC04 | TC03, TC15 | TC02, TC16 |
 | L2 Field Team | TC05 | TC07, TC18 | TC06, TC08 |
 | Admin | TC09, TC17 | TC10 | TC11 |
-| Triage (General) | TC13 | TC12 | TC14 |
+| Triage (General) | TC13 | TC12 | TC14, TC27 |
 
 ---
 
@@ -211,10 +215,11 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 ## 7. Notes on edge cases
 
 - **Capitalization and spaces (TC15 to TC18, FT01, FT02).** BR0 cleans the values before any rule runs, so `"access"`, `"ACCESS"` and `"  Hardware "` are recognized. `get_queue()` and `get_deadline_hours()` also clean their own input, so they give correct results when tested on their own. The program still displays the original value, so the messy input stays visible in the output.
-- **General vs. unknown category (TC12 to TC14 vs. TC19 to TC21).** Both go to Triage, but only an unrecognized category is marked "Needs review", because General is a valid category.
+- **General vs. unknown category (TC12 to TC14 and TC27 vs. TC19 to TC21, TC28 and TC29).** Both go to Triage, but only an unrecognized category is marked "Needs review", because General is a valid category. TC27 checks this boundary after cleaning: `" GENERAL "` is still General, so it stays "Routed".
+- **Near misses (TC28, TC30).** A misspelled value is not corrected or guessed: "Acess" is an unrecognized category (BR3) and "Hight" an unrecognized priority (BR4), so a person reviews the ticket.
 - **Missing values and missing keys (TC20, TC23, TC24, TC26, ticket 1015).** `clean_text()` turns `None` into empty text. `main.py` reads each field with `.get()`, so a key that is absent from the ticket also becomes `None` instead of stopping the program.
 - **Both unknown (TC25, TC26).** BR4 sets the deadline to 0; the queue is Triage and the status is "Needs review" either way.
-- **Rounding of percentages.** Python's `:.1f` formatting rounds an exact half to the nearest even digit, so 5 of 16 tickets (31.25%) is shown as 31.2% and 3 of 16 (18.75%) as 18.8%. The expected values in MT02 follow the program's real rounding.
+- **Rounding of percentages.** The expected percentages follow the rounding rule in `PROBLEM_ANALYSIS.md` section 2.4: one decimal place, with an exact half rounded to the even digit, so 5 of 16 tickets (31.25%) is shown as 31.2% and 3 of 16 (18.75%) as 18.8% (MT02). Because each share is rounded on its own, the shares in MT03 and MT05 add up to 100.1%.
 - **Typed values are kept as typed.** A manual ticket is displayed exactly as entered (MT02 shows `access` and `HIGH`), and BR0 cleans the values only for the rules.
 - **Test data only.** All tickets and test inputs are synthetic. No real people, companies or records are used.
 
@@ -230,6 +235,7 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 | 1.3 | 2026-09-29 | AI refactoring cycle (AI log Entry 015): 9 direct tests added for the new functions `format_deadline()` (FT22 to FT25) and `calculate_percentage()` (FT26 to FT30); the sample tickets now come from `sample_tickets.py`. All other expected results are unchanged, because the refactoring did not change the program's behavior. |
 | 1.4 | 2026-10-12 | Keyboard input added (Option A, AI log Entry 020): 3 tests for `get_next_ticket_id()` (FT31 to FT33) and 5 keyboard tests (MT01 to MT05); run instructions now say to answer `no` for the summary check. All earlier expected results are unchanged. |
 | 1.5 | 2026-10-12 | All tests executed: Actual Result and Passed filled in for the 26 routing tests, 33 function tests, 5 keyboard tests and 7 summary checks; no failures (section 6); test execution record added (section 9). No expected result changed. AI log Entry 021. |
+| 1.6 | 2026-10-12 | 4 boundary tests added and executed after the mock grading (AI log Entries 023 and 024): TC27 (General in uppercase with spaces stays "Routed"), TC28 (misspelled category), TC29 (category with only spaces), TC30 (misspelled priority); all passed. Coverage tables and notes updated; the rounding note now points to the rule in `PROBLEM_ANALYSIS.md` section 2.4; a note on importing `main.py` was added to section 2. No earlier expected or actual result changed. |
 
 ---
 
@@ -237,12 +243,12 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 
 | Item | Value |
 |---|---|
-| Date | 2026-10-12 |
-| Code version | The files in this repository after the keyboard-input change (AI log Entry 020): `main.py`, `calculations.py`, `validations.py`, `sample_tickets.py` |
+| Date | 2026-10-12 (TC01 to TC26, FT01 to FT33, MT01 to MT05 and section 5); 2026-10-12, after the mock grading (TC27 to TC30) |
+| Code version | Commit `b6bff8d` (the keyboard-input change, AI log Entry 020): `main.py`, `calculations.py`, `validations.py`, `sample_tickets.py`. The code has not changed since that commit |
 | Python version | 3.11.15 |
 | Executed by | Claude (AI assistant), at the team's request (AI log Entry 021), by running the real code. The results were not predicted or typed by hand |
 | Method | **3.1:** each row's inputs passed to `route_ticket()`; the returned dictionary written as `queue / deadline / status`. **3.2:** each function called with the row's input; `format_deadline()` imported from `main.py` with `no` typed at the question, as described in section 2. **3.3 and 5:** `python main.py` run once per test, with the listed keyboard input typed in order; the printed ticket block and summary written in Actual. A row is **Yes** only when the actual result is equal to the expected result (same value and same type for 3.2) |
-| Results | 3.1 routing: **26/26 passed** · 3.2 functions: **33/33 passed** · 3.3 keyboard: **5/5 passed** · 5 summary: **7/7 passed** |
+| Results | 3.1 routing: **30/30 passed** · 3.2 functions: **33/33 passed** · 3.3 keyboard: **5/5 passed** · 5 summary: **7/7 passed** |
 | Failures | None (section 6) |
 
 **Team verification.** Before the submission, at least one team member should re-run a sample of these tests on their own computer, following section 2 (suggested: TC16, TC22, FT25, FT30, MT02 and MT04), and confirm that the results are the same. Record the result below.
@@ -253,4 +259,4 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 
 ---
 
-*During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to derive the test cases, coverage tables and run procedure from the team's business rules (BR0 to BR4), to update them after the AI debugging cycle, to add tests for the functions created in the AI refactoring cycle, to add tests for the keyboard input, and to execute all the tests and record their actual results (section 9). After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*
+*During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to derive the test cases, coverage tables and run procedure from the team's business rules (BR0 to BR4), to update them after the AI debugging cycle, to add tests for the functions created in the AI refactoring cycle, to add tests for the keyboard input, to execute all the tests and record their actual results (section 9), and to add and execute the boundary tests TC27 to TC30. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*

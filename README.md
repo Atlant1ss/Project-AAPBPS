@@ -16,13 +16,13 @@ Where to find the evidence for each item of the rubric "Evaluation Project - LO 
 | Item | Criterion | Evidence |
 |---|---|---|
 | **1.1** | Business context, problem and purpose | [`docs/PROBLEM_ANALYSIS.md`](docs/PROBLEM_ANALYSIS.md) §0 (0.1 Business Context, 0.2 Problem, 0.3 Purpose) |
-| **1.2** | IPO model and business rules | [`docs/PROBLEM_ANALYSIS.md`](docs/PROBLEM_ANALYSIS.md) §2 (IPO table, input and output fields with data types and units) and §4 (BR0 to BR4) |
+| **1.2** | IPO model and business rules | [`docs/PROBLEM_ANALYSIS.md`](docs/PROBLEM_ANALYSIS.md) §2 (IPO table, input and output fields with data types and units, calculations and rounding in §2.4) and §4 (BR0 to BR4) |
 | **1.3** | Python implementation of the calculation | [`main.py`](main.py) (`read_manual_ticket()` with `input()`, formatted output with f-strings), [`validations.py`](validations.py) (`ask_yes_or_no()`), [`calculations.py`](calculations.py) (`calculate_percentage()`, `get_next_ticket_id()`, `route_ticket()`); how to run it in §5 below |
 | **1.4** | Documented AI interaction (ST1) | [`docs/AI_INTERACTION_LOG.md`](docs/AI_INTERACTION_LOG.md) Entries **008** (problem analysis), **010** (first version of the code), **019** (assessment brief, Option A or B) and **020** (keyboard input); context in Entries 001 to 003, 006 and 007 |
 | **2.1** | Decision-based business rule | [`docs/PROBLEM_ANALYSIS.md`](docs/PROBLEM_ANALYSIS.md) §4 (BR1 to BR4 and the status rule, including General vs. unknown category and missing values) and §5 (pseudocode) |
-| **2.2** | Implementation with `if`, `elif`, `else` | [`calculations.py`](calculations.py): `get_queue()`, `get_deadline_hours()`, `route_ticket()`; [`main.py`](main.py): `format_deadline()` |
+| **2.2** | Implementation with `if`, `elif`, `else` | [`calculations.py`](calculations.py): `get_queue()`, `get_deadline_hours()` and `route_ticket()`, each with `if`, `elif` and `else` |
 | **2.3** | Test design, execution and reporting | [`docs/TEST_CASES.md`](docs/TEST_CASES.md) §3 (test tables with input, expected result, actual result and passed), §5 (summary check) and §9 (execution record) |
-| **2.4** | Documented AI interaction (ST2) | [`docs/AI_INTERACTION_LOG.md`](docs/AI_INTERACTION_LOG.md) Entries **009** (test design), **013** and **014** (debugging cycle and its corrections), **015** and **016** (refactoring cycle and its application); test execution in Entry 021 |
+| **2.4** | Documented AI interaction (ST2) | [`docs/AI_INTERACTION_LOG.md`](docs/AI_INTERACTION_LOG.md) Entries **009** (test design), **013** and **014** (debugging cycle and its corrections), **015** and **016** (refactoring cycle and its application); test execution in Entries 021 and 024 |
 
 ---
 
@@ -79,9 +79,9 @@ The full analysis (guiding questions, input → processing → output table, ste
 | **Dictionaries** | Each ticket; the result of `route_ticket()`; the counter for each queue |
 | **List** and **list of dictionaries** | `tickets` in `sample_tickets.py`; the list of ticket IDs that need review |
 | Tuple | `QUEUES`: the four queues in a fixed order |
-| **Conditionals** (`if` / `elif` / `else`) with `or` and `and` | `get_queue()`, `get_deadline_hours()`, `route_ticket()`, `format_deadline()` |
+| **Conditionals** (`if` / `elif` / `else`) with `or` and `and` | `get_queue()`, `get_deadline_hours()` and `route_ticket()` use `if` / `elif` / `else`; `format_deadline()`, `show_value()` and `calculate_percentage()` use a single `if` |
 | Loops and counters | The `for` loop over the tickets in `main()`; the queue counters and the total counter; the `while` loop that asks again until the answer is yes or no |
-| Functions with parameters and return values | 16 functions, each with one responsibility |
+| Functions (parameters and return values) | 16 functions, each with one responsibility. Most take parameters and return a value, for example `route_ticket(category, priority)` returns a dictionary; the three printing functions (`print_banner()`, `print_ticket_result()`, `print_summary()`) and `main()` return nothing |
 | Modules and imports | Four `.py` files connected with `from ... import ...` |
 | Formatted output (f-strings) | All output, with percentages to one decimal place |
 | AI-assisted development | Every prompt, response and decision recorded in [`docs/AI_INTERACTION_LOG.md`](docs/AI_INTERACTION_LOG.md) |
@@ -186,7 +186,7 @@ Needs review: 5 ticket(s) [1011, 1012, 1013, 1014, 1015]
 
 ## 6. Running the tests
 
-[`docs/TEST_CASES.md`](docs/TEST_CASES.md) contains 26 routing tests, 33 tests for the individual functions, 5 keyboard-input tests, and a check of the end-of-run summary. To run a test, start Python in the project folder and call the function with the test's input:
+[`docs/TEST_CASES.md`](docs/TEST_CASES.md) contains 30 routing tests, 33 tests for the individual functions, 5 keyboard-input tests, and a check of the end-of-run summary. To run a test, start Python in the project folder and call the function with the test's input:
 
 ```
 python
@@ -203,7 +203,7 @@ All the tests have already been run once and their actual results are recorded i
 
 | Document | Contents |
 |---|---|
-| [`docs/PROBLEM_ANALYSIS.md`](docs/PROBLEM_ANALYSIS.md) | Guiding questions, IPO table, decomposition, business rules and pseudocode |
+| [`docs/PROBLEM_ANALYSIS.md`](docs/PROBLEM_ANALYSIS.md) | Business context, problem and purpose, guiding questions, IPO table, calculations, decomposition, business rules and pseudocode |
 | [`docs/TEST_CASES.md`](docs/TEST_CASES.md) | Test tables for every business rule and function, with expected and actual results, and the test execution record |
 | [`docs/AI_INTERACTION_LOG.md`](docs/AI_INTERACTION_LOG.md) | Every prompt sent to the AI, the relevant response, what the team accepted or rejected and why, including the debugging and refactoring cycles |
 
@@ -228,4 +228,4 @@ MIT License. See [`LICENSE`](LICENSE).
 
 ---
 
-*During the preparation of this README, the author(s) used Claude (Anthropic, model claude-opus-5) to draft the project overview, the business rules summary, the concepts table and the step-by-step run instructions from the team's code and documents, to update them for the keyboard input, and to write the assessment map. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*
+*During the preparation of this README, the author(s) used Claude (Anthropic, model claude-opus-5) to draft the project overview, the business rules summary, the concepts table and the step-by-step run instructions from the team's code and documents, to update them for the keyboard input, to write the assessment map, and to correct the concepts table and test counts after the mock grading. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*

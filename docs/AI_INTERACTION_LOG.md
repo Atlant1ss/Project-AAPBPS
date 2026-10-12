@@ -1,7 +1,7 @@
 # AI Interaction Log
 **Course:** AI-Assisted Python for Business Problem Solving (PSI163) — PUCPR, 2026/2
 **Professor:** Evandro Alberto Zatti
-**Student:** João Vitor da Silva de Quadros
+**Team:** João Vitor da Silva de Quadros, Marlon Zanelato Filho, Nicolas Martinski de Miranda, Wesley Lopes de Faria Geraldo
 **AI tool:** Claude (Anthropic), model `claude-opus-5`, via Claude Cowork
 **Log started:** 2026-09-18
 
@@ -802,5 +802,112 @@ Answer: Paste the drafts (Recommended)
 **Accepted:** Pasting the review drafts into this log as the team's reviews. The Trello changes were not reviewed separately.
 **Rejected:** Writing the reviews again by hand (the other option offered).
 **Justification:** The decision is the team's answer above; no further reason was given.
+
+---
+
+## Entry 023 — 2026-10-12 — Mock grading against the Summative Assessment rubric
+
+**Prompt type:** Role prompting (the AI acts as the professor) with a structured task (Context, Objective, Task, Output); zero-shot evaluation. The AI also used a second, independent AI reviewer (a sub-agent given only the rubric and the repository) to reduce the bias of grading its own work.
+**Goal:** Predict the grade for each rubric criterion before submitting, and find every flaw that could cost points.
+
+**Prompt used:**
+```
+Context: The final push is complete, and our GitHub repository
+([https://github.com/jvquadros/Project-AAPBPS](https://github.com/jvquadros/Project-AAPBPS)) is
+fully synced with all your latest updates (Option A, tests, AI logs, and README assessment map).
+Objective: Before I submit the URL to the PUCPR portal, I need you to act as the professor and
+perform a strict, critical mock grading of the project using the exact Summative Assessment Rubric
+provided earlier.
+Task:
+
+Evaluate our project against all 8 criteria: 1.1, 1.2, 1.3, 1.4, 2.1, 2.2, 2.3, and 2.4.
+
+For each criterion, assign a predicted grade level ("Excellent", "Sufficient", "Insufficient", or
+"No evidence") based strictly on the rubric's definitions.
+
+Provide a brief justification for each grade, pointing specifically to where the evidence is in
+our files (e.g., specific sections, file names, or code behaviors).
+
+Ruthless Critique: If there is any micro-flaw, ambiguity, or technicality that could cost us the
+perfect 5.0 score, flag it immediately. Be highly critical.
+Output: A structured mock grading report.
+```
+
+**Relevant AI response (summary):**
+- **Repository check:** a fresh clone of `main` (commit `126ea7e`) matches the final files: 22 log entries and no open placeholders.
+- **Predicted grades:**
+  - 1.1 Excellent (0.5)
+  - 1.2 Sufficient (0.4)
+  - 1.3 Excellent (0.7)
+  - 1.4 Sufficient (0.5)
+  - 2.1 Excellent (0.5)
+  - 2.2 Excellent (0.6)
+  - 2.3 Sufficient (0.5)
+  - 2.4 Sufficient (0.5)
+  - **Total about 4.2 / 5.0.** The independent reviewer reached the same total.
+- **Main flaws found:**
+  1. **1.2:** the percentage per queue is in the problem statement (§0.2), but not in the IPO table, the output fields, guiding question 4, step 10 or the pseudocode, and its format and rounding are not specified.
+  2. **2.3:** the execution record says the tests were run by the AI, and the team verification table is still empty. No route test covers "General" written with different capitalization or spaces, which is the Routed / Needs review boundary after BR0. Typos ("Acess", "Hight") and a whitespace-only category are not tested either.
+  3. **1.4 and 2.4:** several justifications were drafted by the AI and accepted without further reasons (Entries 014, 016, 019, 020; Entry 022 says "no further reason was given"). Entry 010's reason is only "add great robustness", and Entry 015's is general praise.
+  4. **Polish:** the README cites `format_deadline()` as an `if`/`elif`/`else` example, but it only has an `if`. "16 functions with parameters and return values" is not exact. PROBLEM_ANALYSIS still says "will be tested". The log header names one student. The routing pseudocode has an explicit General branch, while `get_queue()` puts General in its `else`.
+- **Checked and fine:** every recorded actual result matches the code (59 TC/FT rows, MT01–MT05, the summary check); every branch can be reached; every `input()` requirement of 1.3 is met; the counts and versions are consistent; all links work.
+- **Proposed fixes, by points recovered per effort:** document the percentage calculation in the analysis; a team member re-runs a sample of tests and fills the §9 table; add boundary tests TC27–TC30; the team writes its own short reflection on the key AI decisions, which the AI cannot write for them; small wording fixes.
+
+**Accepted:** _pending team review_
+**Rejected:** _pending team review_
+**Justification:** _pending team review_
+
+---
+
+## Entry 024 — 2026-10-12 — Applying the mock-grading fixes (summary calculation, boundary tests, wording)
+
+**Prompt type:** Zero-shot, task execution on a team decision (connected project folder)
+**Goal:** Apply fixes 2, 3(b) and 4 from the mock grading (Entry 023).
+
+**Team decision supplied in the prompt (not made by the AI):** apply fixes 2, 3(b) and 4. The team does the two items the AI must not do for it: the team reflection on the AI decisions (issue 1), and the manual re-run of tests in `TEST_CASES.md` §9 (issue 3a).
+
+**Prompt used:**
+```
+Context: The mock assessment is acknowledged. Decision: Please proceed immediately with applying
+your proposed fixes 2, 3(b), and 4 to the local files. Objective: Optimize the IPO model with the
+percentage calculations, add the missing edge-case tests (TC27-TC30), and execute all listed small
+formatting fixes across the README, logs, and analysis documents. I will handle the human Team
+Reflection (Issue 1) and the manual test execution table (Issue 3a) concurrently. Output: Confirm
+when the local files are updated with these specific fixes.
+```
+
+**Relevant AI response (summary):**
+- **Fix 2, `docs/PROBLEM_ANALYSIS.md` v1.6.** The summary calculation is now part of the model:
+  - guiding question 4 now names the share per queue;
+  - the IPO table has a calculation step (count ÷ total × 100) and lists the share, the total and the needs-review IDs as outputs;
+  - new §2.3 lists the summary output fields with their types and units;
+  - new §2.4 gives each calculation and its boundary rule: division by zero gives 0.0; one decimal place, with an exact half rounded to the even digit; the shares can add up to 99.9% or 100.1%; a typed ticket's ID is the highest ID + 1;
+  - decomposition steps 8 and 10 were updated;
+  - two new pseudocode blocks were added, 5.1 (keyboard ticket) and 5.3 (summary), using only the allowed keywords;
+  - a note explains that `get_queue()` returns Triage in its `else` for both General and unknown categories, and `route_ticket()` tells them apart.
+
+  No business rule changed.
+- **Fix 3(b), `docs/TEST_CASES.md` v1.6.** Four boundary tests were added, executed by running the real code, and all passed:
+  - TC27 `" GENERAL "` / Low → Triage / 72 / Routed;
+  - TC28 `"Acess"` / High → Triage / 4 / Needs review;
+  - TC29 `"   "` / Medium → Triage / 24 / Needs review;
+  - TC30 Access / `"Hight"` → Triage / 0 / Needs review.
+
+  The coverage tables, the edge-case notes and the §9 record were updated (code version `b6bff8d`, results 30/30, 33/33, 5/5, 7/7). The rounding note now points to the rule in §2.4. A note on importing `main.py` was added to §2. The team verification table in §9 was left untouched for the team to fill in.
+- **Fix 4, small corrections:**
+  - README: the 2.2 row of the assessment map no longer lists `format_deadline()`, which has only an `if`. The concepts table now says which functions use `if`/`elif`/`else` and which use a single `if`, and which functions return nothing. The test count is now 30 routing tests.
+  - PROBLEM_ANALYSIS: "will be tested" became "is tested".
+  - This log: the header now lists all four team members.
+- **Not done:** the optional `elif` for General in `get_queue()`. The team listed only the README, the log and the analysis documents, and changing the code would invalidate the team's manual re-run, which was happening at the same time.
+
+**Verification:**
+- Every test was re-executed against the code, and the recorded results matched: 30/30 routing, 33/33 function, 5/5 keyboard, 7/7 summary.
+- Every line in the three pseudocode blocks starts with an allowed keyword.
+- The README keeps its links and its Windows line endings.
+- The files from the team's folder were staged again just before writing, so the team's own edits were kept.
+
+**Accepted:** _pending team review_
+**Rejected:** _pending team review_
+**Justification:** _pending team review_
 
 ---
