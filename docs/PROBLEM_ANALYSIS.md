@@ -4,16 +4,20 @@
 |---|---|
 | Project | Ticket routing system for NexoTech Solutions |
 | Course | AI-Assisted Python for Business Problem Solving (PSI163), PUCPR, 2026/2 |
-| Indicator | ID1.1: analyze an organizational problem, identify inputs, processing and outputs, and decompose it into logical steps |
-| Version | 1.3, 2026-09-29 (v1.0 approved by the team; v1.1 adds BR0; v1.2 marks unknown categories for review; v1.3 notes where the sample tickets live; see section 7) |
+| Indicator | ID1.1: analyze an organizational problem, identify inputs, processing and outputs, and decompose it into logical steps (Summative items 1.1, 1.2, 2.1) |
+| Version | 1.5, 2026-10-12 (v1.0 approved by the team; v1.1 adds BR0; v1.2 marks unknown categories for review; v1.3 notes where the sample tickets live; v1.4 adds keyboard input; v1.5 adds the business context, problem and purpose; see section 7) |
 
 ---
 
-## 0. Business context
+## 0. Business Context, Problem and Purpose
+
+This section answers Summative Assessment item 1.1: the business context, the problem and the purpose of the solution.
+
+### 0.1 Business Context
 
 **NexoTech Solutions** is a fictional IT support company invented for this course. All tickets used in this project are synthetic. No real people, companies or records are involved.
 
-NexoTech's help desk receives support tickets and passes each one to one of four teams (queues):
+NexoTech's help desk receives support tickets from the employees of its client companies. Each ticket describes one problem (for example, a user who cannot log in, a broken printer or a billing question) and must be passed to one of four teams (queues):
 
 | Queue | Handles |
 |---|---|
@@ -21,6 +25,23 @@ NexoTech's help desk receives support tickets and passes each one to one of four
 | **L2 Field Team** | Second-level technicians: infrastructure and hardware problems |
 | **Admin** | Finance-related requests |
 | **Triage** | General requests and any ticket that needs a person to review it |
+
+### 0.2 Problem
+
+Today a person has to read every new ticket just to decide which team should handle it and how fast it must be solved. This first step is slow and inconsistent: tickets wait unassigned, some reach the wrong team, urgent tickets are not clearly separated from routine ones, and nobody can see at a glance how the work is spread across the teams.
+
+The problem to solve is: **process every ticket to find its queue, its resolution deadline in hours and its status ("Routed" or "Needs review"), and then calculate how many tickets went to each queue and what percentage of the total that represents.**
+
+### 0.3 Purpose
+
+The results support concrete decisions at NexoTech:
+
+| Result | Who uses it | Decision it supports |
+|---|---|---|
+| **Queue** of each ticket | Each team | The team receives only its own tickets, immediately, without waiting for someone to sort them. |
+| **Deadline in hours** | Each team | Sets the order of work: a 4-hour ticket is handled before a 72-hour ticket. |
+| **"Needs review" list** | The triage person | Shows exactly which tickets have a category or priority that must be corrected by a person. |
+| **Count and percentage per queue** | The support manager | Shows the workload of each team, to decide how to distribute staff (for example, moving a technician to the team with the largest share). |
 
 ---
 
@@ -39,7 +60,7 @@ NexoTech's help desk receives support tickets and passes each one to one of four
 
 | Input | Processing | Output |
 |---|---|---|
-| A list of support tickets. Each ticket has: **ticket ID**, **description**, **category**, **priority** | 1. Read the ticket's fields.<br>2. Clean the category and priority: lowercase, no surrounding spaces (BR0).<br>3. Find the queue from the category. An unrecognized category goes to Triage and is marked for review (BR1, BR3).<br>4. Find the resolution deadline from the priority (BR2).<br>5. If the priority is not recognized, send the ticket to Triage with no deadline and mark it for review (BR4).<br>6. Count the ticket in its queue. | For each ticket: **queue**, **deadline (hours)**, **status**.<br>At the end: a **summary** of tickets per queue and the number of tickets needing review. |
+| A list of support tickets, plus (optionally) **one ticket typed by the user** with `input()`. Each ticket has: **ticket ID**, **description**, **category**, **priority** | 1. Read the ticket's fields.<br>2. Clean the category and priority: lowercase, no surrounding spaces (BR0).<br>3. Find the queue from the category. An unrecognized category goes to Triage and is marked for review (BR1, BR3).<br>4. Find the resolution deadline from the priority (BR2).<br>5. If the priority is not recognized, send the ticket to Triage with no deadline and mark it for review (BR4).<br>6. Count the ticket in its queue. | For each ticket: **queue**, **deadline (hours)**, **status**.<br>At the end: a **summary** of tickets per queue and the number of tickets needing review. |
 
 ### 2.1 Input fields
 
@@ -49,6 +70,9 @@ NexoTech's help desk receives support tickets and passes each one to one of four
 | `description` | text | `"Cannot log in to the VPN"` | Shown in the output. Not used by the rules in this phase |
 | `category` | text | `"Access"`, `"access"` or `"ACCESS"` (any capitalization) | Routing (BR0, BR1, BR3) |
 | `priority` | text | `"High"`, `"high"` or `"HIGH"` (any capitalization) | Resolution deadline (BR0, BR2, BR4) |
+| Answer to "Add a ticket manually? (yes/no)" | text, typed with `input()` | `"yes"`, `"no"` (any capitalization) | Decides whether one ticket is read from the keyboard; any other answer is asked again |
+
+The description, category and priority of a manual ticket are typed with `input()` and kept as text. Its ticket ID is calculated, not typed: one more than the highest ID already in the list.
 
 ### 2.2 Output fields
 
@@ -64,7 +88,7 @@ NexoTech's help desk receives support tickets and passes each one to one of four
 
 ### 3.1 Decomposition
 
-1. Load the list of tickets to process.
+1. Load the list of tickets to process. Ask the user "Add a ticket manually? (yes/no)"; any other answer is asked again. On **yes**, read the description, category and priority from the keyboard, give the ticket the next free ID (highest ID + 1) and add it to the list.
 2. Take the next ticket and read its ID, description, category and priority.
 3. **Clean** the category and priority: convert them to lowercase, remove surrounding spaces, and turn a missing value into empty text (BR0).
 4. Decide the **queue** from the category (BR1). An unrecognized category goes to **Triage** and is marked **"Needs review"** (BR3).
@@ -184,6 +208,7 @@ END
 - **Routing decision (BR1, BR3).** Five paths. "General" goes to Triage as a normal ticket. The final ELSE covers any unrecognized or missing category: it sends the ticket to Triage and marks it for review, so every ticket always gets a queue.
 - **Deadline decision (BR2, BR4).** Four paths. The final ELSE handles an unrecognized priority. It overrides the queue with "Triage" and marks the ticket for review, so BR4 is applied in one single place.
 - **Repetition.** The whole block runs once for each ticket in the list (steps 2 to 9 of section 3.1). The counts per queue and the final summary (steps 8 and 10) sit around this block. In Python they become a `for` loop with counters, which is ST2 content.
+- **Where the READ values come from.** Each ticket comes either from the sample list or, for one optional ticket, from the keyboard (`input()`). The same algorithm handles both.
 - **Decision values.** Each branch of both decisions will be tested with at least three different input values in `docs/TEST_CASES.md`.
 
 ---
@@ -192,7 +217,7 @@ END
 
 1. The **category** comes with the ticket; the requester chooses it when opening the ticket. In this phase the system does not check the category against the description text.
 2. Deadlines are **counted in hours from the moment the ticket is opened**. Turning them into an exact due date and time is outside this phase.
-3. The tickets processed in this phase are a **small synthetic sample**: a list of dictionaries defined in `sample_tickets.py` and processed by `main.py`. There is no database or external data source.
+3. The tickets processed in this phase are a **small synthetic sample**: a list of dictionaries defined in `sample_tickets.py` and processed by `main.py`, plus, optionally, one ticket typed at the keyboard. There is no database or external data source.
 
 ---
 
@@ -204,7 +229,9 @@ END
 | 1.1 | 2026-09-29 | Added BR0 (input cleaning): capitalization and surrounding spaces are ignored. Pseudocode, IPO table and decomposition updated to match. Team decision. |
 | 1.2 | 2026-09-29 | BR3 now marks an unrecognized category "Needs review"; BR0 also covers a field that is absent from the ticket. Pseudocode, decomposition and status rule updated. Team decisions from the AI debugging cycle (AI log Entry 013). |
 | 1.3 | 2026-09-29 | Assumption 3 updated: the sample tickets now live in `sample_tickets.py` (AI refactoring cycle, AI log Entry 015). No business rule changed. |
+| 1.4 | 2026-10-12 | Keyboard input added to meet the Summative Assessment requirement 1.3 (`input()`): the user may type one ticket, and the yes/no answer is validated. IPO table, input fields, decomposition step 1, pseudocode notes and assumption 3 updated. No business rule changed. Team decision (Option A, AI log Entry 020). |
+| 1.5 | 2026-10-12 | Section 0 rewritten as "Business Context, Problem and Purpose" to answer Summative Assessment item 1.1: business context (0.1), problem statement (0.2) and the decisions the results support (0.3). No business rule changed. Requested by the team (AI log Entry 021). |
 
 ---
 
-*During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to structure the problem analysis (guiding questions, IPO table, decomposition, business rules and pseudocode) from the business rules defined by the team, to propose the handling of unrecognized categories and priorities (BR3, BR4), to write the input cleaning rule (BR0) requested by the team, and to apply the rule changes the team accepted in the AI debugging cycle. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*
+*During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to structure the problem analysis (guiding questions, IPO table, decomposition, business rules and pseudocode) from the business rules defined by the team, to propose the handling of unrecognized categories and priorities (BR3, BR4), to write the input cleaning rule (BR0) requested by the team, to apply the rule changes the team accepted in the AI debugging cycle, to describe the keyboard input added for the Summative Assessment, and to write the business context, problem and purpose section (section 0). After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*

@@ -611,3 +611,144 @@ must include:
 **Justification:** _pending team review_
 
 ---
+
+## Entry 018 — 2026-09-29 — Trello update and final RA1 check
+
+**Prompt type:** Zero-shot, task execution and verification (tool use: Trello connector; git clone of the public repository; connected project folder)
+**Goal:** Close the AI-cycles card on Trello and check whether anything is still pending for the RA1 delivery.
+
+**Prompt used:**
+```
+Context: The teammates' names were added to the README and the git push was 100% successful.
+Objective: Please move the "Run and document AI-assisted debugging & refactoring cycles" card to
+'Done' on Trello as promised. Also, do a quick final check: is there absolutely anything else
+pending for this RA1 delivery based on our initial plan?
+```
+
+**Relevant AI response (summary):**
+- **Trello (after reading the current board):** "Run and document AI-assisted debugging & refactoring cycles" was moved to Done, marked complete, and commented with references to Entries 013–016 (ID1.4).
+- **Repository check (fresh clone):** all ten files are on `main` and identical to the latest versions; `main.py` runs; every artifact carries the PUCPR disclosure statement.
+- **Still pending for RA1, found by the check:**
+  1. The README on GitHub (and in the local folder) still shows the placeholder instead of the other team members' names.
+  2. The Actual Result and Passed columns in `TEST_CASES.md` are empty for all 56 rows, and for the summary check.
+  3. Nine log entries (004, 005, 006, 007, 011, 012, 014, 016, 017) still say "pending team review" under Accepted / Rejected / Justification.
+  4. The peer review (Class 8, 25/09) card is still in the backlog, with no record of the review.
+  5. Questions for the professor: whether ID1.3 (pandas, "supporting data files") is graded in this delivery; the date of the individual RA1 assessment; the submission format.
+  6. The submission itself (by 03/10) and the Trello cards "Create the GitHub repo", "Document AI usage during development" and "Assemble the RA1 case study".
+
+**Accepted:** _pending team review_
+**Rejected:** _pending team review_
+**Justification:** _pending team review_
+
+---
+
+## Entry 019 — 2026-10-12 — Summative Assessment brief (LO 1)
+
+**Prompt type:** Zero-shot, document comprehension + structured summary and gap analysis (attached PDF; git clone of the public repository)
+**Goal:** Summarize the professor's Summative Assessment brief and rubric for LO 1, and compare the project with it.
+
+**Prompt used:**
+```
+the teacher has posted the Summative Assessment
+please abstract the content from the pdf file so we can allign the project to it
+```
+**Attachment:** `Summative Assessment - LO 1.pdf` (assignment page with the rubric "Evaluation Project - LO 1").
+
+**Relevant AI response (summary):** Produced `RA1_SUMMATIVE_ASSESSMENT.md`:
+- **Facts:** 5.0 points, due 17/10/2026, group submission, unlimited attempts, submitted as a web URL, upload or Office 365; only Study Themes 1 and 2 are assessed.
+- **Tasks:** 1.1 business context, problem and purpose; 1.2 IPO model and business rules; 1.3 a `.py` file with variables, data types, `input()`, a meaningful calculation stored in variables, and formatted output; 1.4 and 2.4 AI interaction records; 2.1 a decision rule; 2.2 `if`/`elif`/`else`; 2.3 tests with input, expected, actual and passed.
+- **Rubric:** eight criteria (0.5 / 0.6 / 0.7 / 0.7 / 0.5 / 0.6 / 0.7 / 0.7) with what each level requires.
+- **Gaps found in the current repository:**
+  - no `input()` anywhere (1.3);
+  - Actual Result and Passed empty for all 56 test rows (2.3);
+  - 9 log entries still pending team review, and no index linking entries to 1.4 and 2.4;
+  - no section explicitly labeled Business Context / Problem / Purpose (1.1);
+  - the README still has the team-names placeholder.
+- **Two options for the `input()` requirement:** A, enter one ticket by keyboard; B, A plus an hours-remaining calculation, which needs a new rule with boundaries.
+- **A submission plan.**
+
+**Verification:** the deadline, the points, the submission details and the 1.3 requirements were checked against the PDF text; the rubric points add up to 5.0; the gaps were checked against a fresh clone of the repository.
+
+*Team review, given in the prompt of Entry 020:*
+**Accepted:** Option A for the `input()` requirement (one ticket typed at the keyboard), as the AI recommended.
+**Rejected:** Option B (the hours-remaining calculation) was not chosen.
+**Justification:** _[team to fill in]_ (the AI recommended A because it adds no new business rule, and answering "no" keeps the current results and tests valid). The rest of the submission plan is still open.
+
+---
+
+## Entry 020 — 2026-10-12 — Keyboard input with input() (Option A)
+
+**Prompt type:** Zero-shot, task execution on a team decision
+**Goal:** Meet Summative Assessment requirement 1.3 ("receives at least some information using `input()`") with Option A from Entry 019.
+
+**Team decision supplied in the prompt (not made by the AI):** Option A.
+
+**Prompt used:**
+```
+First, lets follow with A
+```
+
+**Relevant AI response (summary):**
+- `validations.py`: new `ask_yes_or_no(question)`. It reads the answer with `input()`, cleans it with `clean_text()`, and repeats the question in a `while` loop until the answer is yes or no.
+- `calculations.py`: new `get_next_ticket_id(tickets)`, which returns the highest ID in the list plus 1 (1 for an empty list) and skips tickets without an ID.
+- `main.py`: new `read_manual_ticket(ticket_id)`, which reads the description, category and priority with `input()` and returns a ticket dictionary. `main()` asks "Add a ticket manually? (yes/no)" once, after the title and before processing; on yes, the new ticket is added to the end of the list and goes through the same rules.
+- `docs/PROBLEM_ANALYSIS.md` v1.4: the IPO table and input fields now include the keyboard input; decomposition step 1, the pseudocode notes and assumption 3 were updated. No business rule changed.
+- `docs/TEST_CASES.md` v1.4: FT31–FT33 for `get_next_ticket_id()`; keyboard tests MT01–MT05 (answer no, two manual tickets, an invalid answer, uppercase YES with empty fields); run instructions now say to answer `no` for the summary check.
+- `README.md`: run steps updated with the question and an example of typing a ticket; the concepts table now includes keyboard input and the `while` loop; the counts are 16 functions, 33 function tests and 5 keyboard tests.
+- **Found while testing:** Python's `:.1f` rounds an exact half to the even digit (5 of 16 = 31.25% is shown as 31.2%). The expected values follow the program's real output, and a note was added to the tests.
+
+**Additions the AI made beyond the prompt (the team must accept or reject each):**
+1. The yes/no answer is validated with a `while` loop, and any capitalization is accepted.
+2. The manual ticket's ID is calculated (`get_next_ticket_id()`) instead of typed, which avoids converting typed text to `int` and avoids duplicate IDs.
+3. The category and priority prompts list the valid options.
+4. The typed values are kept exactly as typed for display; BR0 cleans them only for the rules.
+
+**Verification:** answering "no" gives output identical to the previous version except for the question line; all 26 routing tests and 33 function tests pass; MT01–MT05 were run with the listed keyboard inputs and matched their expected results; the README's example output matches the program; the pseudocode still uses only the allowed keywords; the files compile, use ASCII only, and contain no classes, comprehensions or third-party imports.
+
+**Accepted:** _pending team review_
+**Rejected:** _pending team review_
+**Justification:** _pending team review_
+
+---
+
+## Entry 021 — 2026-10-12 — Applying Option A locally and completing the RA1 tasks
+
+**Prompt type:** Structured prompt (Context, Objective, Instructions, Output); zero-shot, task execution (connected project folder; Trello connector, read-only)
+**Goal:** Write the updated files to the local project folder and complete the remaining Summative Assessment tasks before the 17/10 deadline.
+
+**Prompt used:**
+```
+Context: I have reconnected the local project folder to this session. Objective: Please proceed
+with applying the Option A files to my local folder and finish ALL remaining tasks for the 17/10
+deadline. Instructions:
+
+1. Apply Files: Write the 7 updated files directly to my local folder. CRITICAL: Before
+   overwriting `README.md`, read my local version to extract the teammates' names I added in
+   section 9, and ensure they are preserved in your new version.
+2. Execute all remaining pending tasks:
+   * Fill in the "Actual Result" and "Passed" columns for all 64 tests in `TEST_CASES.md` based
+     on your successful run.
+   * Add the specific "Business Context", "Problem", and "Purpose" headings and content to
+     `PROBLEM_ANALYSIS.md` (LO 1.1).
+   * Add the "Assessment Map" to the `README.md` to help the grader.
+   * Draft the 9 pending log reviews for my confirmation, explicitly mapping which entries
+     correspond to LO 1.4 and LO 2.4. Output: Confirm when the local files are updated with all
+     these changes, provide the drafted log text, and give me the final `git` commands to push
+     everything to GitHub.
+```
+
+**Relevant AI response (summary):**
+- **Local folder, read before writing:** the code and documents were identical to GitHub, except this log (Entry 018 had been added locally and not pushed). Section 9 of `README.md`, both in the local folder and on GitHub, lists only "João Vitor da Silva de Quadros" and the placeholder `[add the other team members here]`. No other names were found, so there was nothing to preserve. The AI kept the placeholder and did not invent names; the team must add them before the submission.
+- **Files written to the local folder:** `main.py`, `calculations.py` and `validations.py` (the keyboard input from Entry 020); `README.md` (Entry 020 changes plus an "Assessment map" linking items 1.1 to 2.4 to their files, sections and log entries); `docs/PROBLEM_ANALYSIS.md` v1.5 (section 0 rewritten as 0.1 Business Context, 0.2 Problem, 0.3 Purpose, with a table linking each result to the decision it supports); `docs/TEST_CASES.md` v1.5; this log.
+- **Tests executed by running the real code (Python 3.11.15):** 26/26 routing tests, 33/33 function tests, 5/5 keyboard tests and 7/7 summary checks passed. The returned values and the printed output were written in Actual Result, and Passed is "Yes" only where the actual result equals the expected one. A test execution record was added (`TEST_CASES.md` §9), with a table for a team member to re-run a sample of the tests on their own computer.
+- **Review drafts:** `LOG_REVIEW_DRAFTS.md`, in the `Trabalho` folder (outside the repository), with draft Accepted / Rejected / Justification text for Entries 004, 005, 006, 007, 011, 012, 014, 016 and 017, and also for 018, 019 (justification only), 020 and 021 and the open "Reason" line of Entry 008. It includes an index of the entries for 1.4 (008, 010, 019, 020) and 2.4 (009, 013, 014, 015, 016). The drafts are based on the team's later prompts, the git history and the Trello history, and are marked for the team to confirm. They were not pasted into this log.
+- **Trello (read-only):** no board activity since 2026-09-29, so no change made in Entries 004 and 011 was reverted. This was used as evidence in the drafts.
+- The git commands to commit and push the changes.
+
+**Verification:** the rewritten files compile; `python main.py` with the answer `no` gives the summary in the README; every test row has an Actual Result and a Passed value; the pseudocode still uses only the allowed keywords; the files use no classes, comprehensions, lambdas or third-party imports.
+
+**Accepted:** _pending team review_
+**Rejected:** _pending team review_
+**Justification:** _pending team review_
+
+---

@@ -1,19 +1,21 @@
 # main.py
-# Runs the NexoTech Solutions ticket routing on the sample tickets:
-# routes each ticket, prints its result, then prints an end-of-run summary.
+# Runs the NexoTech Solutions ticket routing: optionally reads one new ticket
+# from the keyboard, routes every ticket, prints each result, then prints an
+# end-of-run summary.
 #
-# How to run (inside the support-triage folder):  python main.py
+# How to run (inside the project folder):  python main.py
 #
 # AI disclosure (PUCPR Resolution 274/2024): During the preparation of this code,
 # the author(s) used Claude (Anthropic, model claude-opus-5) to write the
 # processing loop, the summary counters and the output formatting, to apply the
 # corrections the team accepted in the AI debugging cycle (AI log Entry 013),
-# and to reorganize the code into functions in the AI refactoring cycle
-# (AI log Entry 015). After using this tool, the author(s) reviewed and edited
-# the content as needed and take full responsibility for the content.
+# to reorganize the code into functions in the AI refactoring cycle (AI log
+# Entry 015), and to add the keyboard ticket entry with input() (AI log
+# Entry 020). After using this tool, the author(s) reviewed and edited the
+# content as needed and take full responsibility for the content.
 
-from validations import is_missing
-from calculations import route_ticket, calculate_percentage
+from validations import is_missing, ask_yes_or_no
+from calculations import route_ticket, calculate_percentage, get_next_ticket_id
 from calculations import QUEUES, STATUS_NEEDS_REVIEW, NO_DEADLINE
 from sample_tickets import tickets
 
@@ -41,6 +43,20 @@ def format_deadline(deadline_hours):
     if deadline_hours == NO_DEADLINE:
         return "not set (priority must be reviewed)"
     return f"{deadline_hours} hours"
+
+
+def read_manual_ticket(ticket_id):
+    """Ask the user for one ticket's details and return it as a dictionary.
+
+    The typed text is kept exactly as entered; the rules clean it later (BR0).
+    """
+    print("-" * LINE_WIDTH)
+    print(f"New ticket {ticket_id}")
+    description = input("Description: ")
+    category = input("Category (Access, Software, Infrastructure, Hardware, Finance, General): ")
+    priority = input("Priority (High, Medium, Low): ")
+    return {"ticket_id": ticket_id, "description": description,
+            "category": category, "priority": priority}
 
 
 def show_value(value):
@@ -89,6 +105,12 @@ def main():
     needs_review_ids = []
 
     print_banner("NEXOTECH SOLUTIONS - TICKET ROUTING")
+
+    # Keyboard input: the user may add one ticket before the batch is processed.
+    # Answering "no" processes only the sample tickets.
+    if ask_yes_or_no("Add a ticket manually? (yes/no): "):
+        new_ticket = read_manual_ticket(get_next_ticket_id(tickets))
+        tickets.append(new_ticket)
 
     for ticket in tickets:
         # .get() instead of ticket["..."]: a missing key gives None instead of a KeyError

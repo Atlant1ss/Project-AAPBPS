@@ -1,15 +1,17 @@
 # calculations.py
 # Business rules for NexoTech Solutions ticket routing (BR1 to BR4), plus the
-# percentage calculation used in the end-of-run summary.
-# These functions only calculate and return results. They never print and
-# never create or read ticket data, so each rule can be tested on its own.
+# percentage calculation used in the end-of-run summary and the calculation of
+# the next free ticket ID.
+# These functions only calculate and return results. They never print, never
+# ask for input and never create ticket data, so each one can be tested on its own.
 #
 # AI disclosure (PUCPR Resolution 274/2024): During the preparation of this code,
 # the author(s) used Claude (Anthropic, model claude-opus-5) to implement the
 # team's routing and deadline rules (BR1 to BR4) as functions, to apply the
 # corrections the team accepted in the AI debugging cycle (AI log Entry 013),
-# and to add calculate_percentage() in the AI refactoring cycle (AI log
-# Entry 015). After using this tool, the author(s) reviewed and edited the
+# to add calculate_percentage() in the AI refactoring cycle (AI log Entry 015),
+# and to add get_next_ticket_id() for the keyboard ticket entry (AI log
+# Entry 020). After using this tool, the author(s) reviewed and edited the
 # content as needed and take full responsibility for the content.
 
 from validations import clean_text
@@ -98,3 +100,16 @@ def calculate_percentage(count, total):
     if total == 0:
         return 0.0
     return count / total * 100
+
+
+def get_next_ticket_id(tickets):
+    """Return a ticket ID one higher than the highest ID in the list.
+
+    Returns 1 when the list is empty. Tickets without an ID are skipped.
+    """
+    highest_id = 0
+    for ticket in tickets:
+        ticket_id = ticket.get("ticket_id")
+        if ticket_id is not None and ticket_id > highest_id:
+            highest_id = ticket_id
+    return highest_id + 1

@@ -4,10 +4,11 @@
 |---|---|
 | Project | Ticket routing system for NexoTech Solutions |
 | Course | AI-Assisted Python for Business Problem Solving (PSI163), PUCPR, 2026/2 |
-| Indicator | ID1.2: conditional structures, repetition and functions, tested with different input values |
-| Based on | `docs/PROBLEM_ANALYSIS.md` v1.2, business rules BR0 to BR4 |
-| Code under test | `validations.py` → `clean_text()`, `is_missing()`; `calculations.py` → `get_queue()`, `get_deadline_hours()`, `route_ticket()`, `calculate_percentage()`; `main.py` → `format_deadline()` and the end-of-run summary (tickets from `sample_tickets.py`) |
-| Version | 1.3, 2026-09-29 (see section 8) |
+| Indicator | ID1.2: conditional structures, repetition and functions, tested with different input values (Summative item 2.3) |
+| Based on | `docs/PROBLEM_ANALYSIS.md` v1.5, business rules BR0 to BR4 |
+| Code under test | `validations.py` → `clean_text()`, `is_missing()`; `calculations.py` → `get_queue()`, `get_deadline_hours()`, `route_ticket()`, `calculate_percentage()`; `main.py` → `format_deadline()`, the keyboard entry (`ask_yes_or_no()` from `validations.py`, `read_manual_ticket()`, `get_next_ticket_id()` from `calculations.py`) and the end-of-run summary (tickets from `sample_tickets.py`) |
+| Version | 1.5, 2026-10-12 (see section 8) |
+| Result | **All tests executed and passed:** 26/26 routing, 33/33 function, 5/5 keyboard, 7/7 summary checks (see section 9) |
 
 ---
 
@@ -26,14 +27,14 @@
 
 ## 2. How to run these tests
 
-1. Open a terminal inside the `support-triage` folder and start Python with `python`.
+1. Open a terminal inside the project folder and start Python with `python`.
 2. Import the functions once:
    ```
    >>> from validations import clean_text, is_missing
-   >>> from calculations import get_queue, get_deadline_hours, route_ticket, calculate_percentage
+   >>> from calculations import get_queue, get_deadline_hours, route_ticket, calculate_percentage, get_next_ticket_id
    >>> from main import format_deadline
    ```
-   The last import runs the whole program once and prints its output first. That is expected: `main.py` calls `main()` at the end. After that, `format_deadline()` is ready to test.
+   The last import runs the whole program once, because `main.py` calls `main()` at the end. The program first asks "Add a ticket manually? (yes/no)": type `no`. It then prints its output, and after that `format_deadline()` is ready to test.
 3. For each test, call the function with that test's input, exactly as written in the table. When a row shows two inputs (`calculate_percentage()`), pass them in that order, e.g. `calculate_percentage(3, 15)`. Write `None` without quotes for a missing value, and `""` for empty text. For example, with an input that is not in the tables:
    ```
    >>> route_ticket("Software", "HIGH")
@@ -44,7 +45,9 @@
 4. Write what the function returns in **Actual Result**. For `route_ticket()`, use the form `queue / deadline / status`, e.g. `L1 Helpdesk / 4 / Routed`.
 5. Fill in **Passed:** **Yes** only if the actual result matches the expected one, **No** otherwise. Record every **No** in section 6.
 
-**Summary check (section 5):** run `python main.py` and compare the end-of-run summary with the expected values.
+**Summary check (section 5):** run `python main.py`, answer `no` to "Add a ticket manually?", and compare the end-of-run summary with the expected values.
+
+**Keyboard tests (section 3.3):** run `python main.py` and type the inputs listed for each test, pressing Enter after each one. Write what the program shows in **Actual Result**.
 
 ---
 
@@ -54,32 +57,32 @@
 
 | Test ID | Rules | Scenario description | Input: Category | Input: Priority | Expected Queue | Expected Deadline (hours) | Expected Status | Actual Result | Passed |
 |---|---|---|---|---|---|---|---|---|---|
-| TC01 | BR1, BR2 | Access ticket, high priority | Access | High | L1 Helpdesk | 4 | Routed | | |
-| TC02 | BR1, BR2 | Access ticket, low priority | Access | Low | L1 Helpdesk | 72 | Routed | | |
-| TC03 | BR1, BR2 | Software ticket, medium priority | Software | Medium | L1 Helpdesk | 24 | Routed | | |
-| TC04 | BR1, BR2 | Software ticket, high priority | Software | High | L1 Helpdesk | 4 | Routed | | |
-| TC05 | BR1, BR2 | Infrastructure ticket, high priority | Infrastructure | High | L2 Field Team | 4 | Routed | | |
-| TC06 | BR1, BR2 | Infrastructure ticket, low priority | Infrastructure | Low | L2 Field Team | 72 | Routed | | |
-| TC07 | BR1, BR2 | Hardware ticket, medium priority | Hardware | Medium | L2 Field Team | 24 | Routed | | |
-| TC08 | BR1, BR2 | Hardware ticket, low priority | Hardware | Low | L2 Field Team | 72 | Routed | | |
-| TC09 | BR1, BR2 | Finance ticket, high priority | Finance | High | Admin | 4 | Routed | | |
-| TC10 | BR1, BR2 | Finance ticket, medium priority | Finance | Medium | Admin | 24 | Routed | | |
-| TC11 | BR1, BR2 | Finance ticket, low priority | Finance | Low | Admin | 72 | Routed | | |
-| TC12 | BR1, BR2 | General ticket, medium priority | General | Medium | Triage | 24 | Routed | | |
-| TC13 | BR1, BR2 | General ticket, high priority | General | High | Triage | 4 | Routed | | |
-| TC14 | BR1, BR2 | General ticket, low priority | General | Low | Triage | 72 | Routed | | |
-| TC15 | BR0, BR1, BR2 | Category written in lowercase | `"access"` | Medium | L1 Helpdesk | 24 | Routed | | |
-| TC16 | BR0, BR1, BR2 | Category written in uppercase | `"ACCESS"` | Low | L1 Helpdesk | 72 | Routed | | |
-| TC17 | BR0, BR1, BR2 | Priority written in lowercase | Finance | `"high"` | Admin | 4 | Routed | | |
-| TC18 | BR0, BR1, BR2 | Extra spaces in the category, priority in uppercase | `"  Hardware "` | `"MEDIUM"` | L2 Field Team | 24 | Routed | | |
-| TC19 | BR3, BR2 | Category not in the list | Printer | High | Triage | 4 | Needs review | | |
-| TC20 | BR3, BR2 | Category missing | `None` | Low | Triage | 72 | Needs review | | |
-| TC21 | BR3, BR2 | Category is empty text | `""` | Medium | Triage | 24 | Needs review | | |
-| TC22 | BR4 | Priority not in the list | Access | Urgent | Triage | 0 | Needs review | | |
-| TC23 | BR4 | Priority is empty text | Hardware | `""` | Triage | 0 | Needs review | | |
-| TC24 | BR4 | Priority missing | Software | `None` | Triage | 0 | Needs review | | |
-| TC25 | BR3, BR4 | Category and priority both unknown | Printer | Urgent | Triage | 0 | Needs review | | |
-| TC26 | BR3, BR4 | Category and priority both missing | `None` | `None` | Triage | 0 | Needs review | | |
+| TC01 | BR1, BR2 | Access ticket, high priority | Access | High | L1 Helpdesk | 4 | Routed | L1 Helpdesk / 4 / Routed | Yes |
+| TC02 | BR1, BR2 | Access ticket, low priority | Access | Low | L1 Helpdesk | 72 | Routed | L1 Helpdesk / 72 / Routed | Yes |
+| TC03 | BR1, BR2 | Software ticket, medium priority | Software | Medium | L1 Helpdesk | 24 | Routed | L1 Helpdesk / 24 / Routed | Yes |
+| TC04 | BR1, BR2 | Software ticket, high priority | Software | High | L1 Helpdesk | 4 | Routed | L1 Helpdesk / 4 / Routed | Yes |
+| TC05 | BR1, BR2 | Infrastructure ticket, high priority | Infrastructure | High | L2 Field Team | 4 | Routed | L2 Field Team / 4 / Routed | Yes |
+| TC06 | BR1, BR2 | Infrastructure ticket, low priority | Infrastructure | Low | L2 Field Team | 72 | Routed | L2 Field Team / 72 / Routed | Yes |
+| TC07 | BR1, BR2 | Hardware ticket, medium priority | Hardware | Medium | L2 Field Team | 24 | Routed | L2 Field Team / 24 / Routed | Yes |
+| TC08 | BR1, BR2 | Hardware ticket, low priority | Hardware | Low | L2 Field Team | 72 | Routed | L2 Field Team / 72 / Routed | Yes |
+| TC09 | BR1, BR2 | Finance ticket, high priority | Finance | High | Admin | 4 | Routed | Admin / 4 / Routed | Yes |
+| TC10 | BR1, BR2 | Finance ticket, medium priority | Finance | Medium | Admin | 24 | Routed | Admin / 24 / Routed | Yes |
+| TC11 | BR1, BR2 | Finance ticket, low priority | Finance | Low | Admin | 72 | Routed | Admin / 72 / Routed | Yes |
+| TC12 | BR1, BR2 | General ticket, medium priority | General | Medium | Triage | 24 | Routed | Triage / 24 / Routed | Yes |
+| TC13 | BR1, BR2 | General ticket, high priority | General | High | Triage | 4 | Routed | Triage / 4 / Routed | Yes |
+| TC14 | BR1, BR2 | General ticket, low priority | General | Low | Triage | 72 | Routed | Triage / 72 / Routed | Yes |
+| TC15 | BR0, BR1, BR2 | Category written in lowercase | `"access"` | Medium | L1 Helpdesk | 24 | Routed | L1 Helpdesk / 24 / Routed | Yes |
+| TC16 | BR0, BR1, BR2 | Category written in uppercase | `"ACCESS"` | Low | L1 Helpdesk | 72 | Routed | L1 Helpdesk / 72 / Routed | Yes |
+| TC17 | BR0, BR1, BR2 | Priority written in lowercase | Finance | `"high"` | Admin | 4 | Routed | Admin / 4 / Routed | Yes |
+| TC18 | BR0, BR1, BR2 | Extra spaces in the category, priority in uppercase | `"  Hardware "` | `"MEDIUM"` | L2 Field Team | 24 | Routed | L2 Field Team / 24 / Routed | Yes |
+| TC19 | BR3, BR2 | Category not in the list | Printer | High | Triage | 4 | Needs review | Triage / 4 / Needs review | Yes |
+| TC20 | BR3, BR2 | Category missing | `None` | Low | Triage | 72 | Needs review | Triage / 72 / Needs review | Yes |
+| TC21 | BR3, BR2 | Category is empty text | `""` | Medium | Triage | 24 | Needs review | Triage / 24 / Needs review | Yes |
+| TC22 | BR4 | Priority not in the list | Access | Urgent | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
+| TC23 | BR4 | Priority is empty text | Hardware | `""` | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
+| TC24 | BR4 | Priority missing | Software | `None` | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
+| TC25 | BR3, BR4 | Category and priority both unknown | Printer | Urgent | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
+| TC26 | BR3, BR4 | Category and priority both missing | `None` | `None` | Triage | 0 | Needs review | Triage / 0 / Needs review | Yes |
 
 ### 3.2 Individual functions
 
@@ -87,36 +90,53 @@ The course asks for every function to be tested with different input values. The
 
 | Test ID | Function | Scenario description | Input | Expected Result | Actual Result | Passed |
 |---|---|---|---|---|---|---|
-| FT01 | `clean_text()` | Mixed capitalization | `"Access"` | `"access"` | | |
-| FT02 | `clean_text()` | Surrounding spaces and uppercase | `"  HIGH "` | `"high"` | | |
-| FT03 | `clean_text()` | Missing value | `None` | `""` | | |
-| FT04 | `clean_text()` | Number instead of text | `3` | `"3"` | | |
-| FT05 | `is_missing()` | Missing value | `None` | `True` | | |
-| FT06 | `is_missing()` | Only spaces | `"   "` | `True` | | |
-| FT07 | `is_missing()` | Empty text | `""` | `True` | | |
-| FT08 | `is_missing()` | Normal text | `"Finance"` | `False` | | |
-| FT09 | `get_queue()` | Access, normal capitalization | `"Access"` | `"L1 Helpdesk"` | | |
-| FT10 | `get_queue()` | Software, lowercase | `"software"` | `"L1 Helpdesk"` | | |
-| FT11 | `get_queue()` | Infrastructure, uppercase | `"INFRASTRUCTURE"` | `"L2 Field Team"` | | |
-| FT12 | `get_queue()` | Hardware | `"Hardware"` | `"L2 Field Team"` | | |
-| FT13 | `get_queue()` | Finance with surrounding spaces | `" finance "` | `"Admin"` | | |
-| FT14 | `get_queue()` | General | `"General"` | `"Triage"` | | |
-| FT15 | `get_queue()` | Category not in the list | `"Printer"` | `"Triage"` | | |
-| FT16 | `get_queue()` | Missing category | `None` | `"Triage"` | | |
-| FT17 | `get_deadline_hours()` | High | `"High"` | `4` | | |
-| FT18 | `get_deadline_hours()` | Medium, lowercase | `"medium"` | `24` | | |
-| FT19 | `get_deadline_hours()` | Low, uppercase with spaces | `" LOW "` | `72` | | |
-| FT20 | `get_deadline_hours()` | Priority not in the list | `"Urgent"` | `0` | | |
-| FT21 | `get_deadline_hours()` | Missing priority | `None` | `0` | | |
-| FT22 | `format_deadline()` | High-priority deadline | `4` | `"4 hours"` | | |
-| FT23 | `format_deadline()` | Medium-priority deadline | `24` | `"24 hours"` | | |
-| FT24 | `format_deadline()` | Low-priority deadline | `72` | `"72 hours"` | | |
-| FT25 | `format_deadline()` | No deadline set (BR4) | `0` | `"not set (priority must be reviewed)"` | | |
-| FT26 | `calculate_percentage()` | Part of the total | `3, 15` | `20.0` | | |
-| FT27 | `calculate_percentage()` | Largest queue in the sample | `6, 15` | `40.0` | | |
-| FT28 | `calculate_percentage()` | All tickets in one queue | `15, 15` | `100.0` | | |
-| FT29 | `calculate_percentage()` | Queue with no tickets | `0, 15` | `0.0` | | |
-| FT30 | `calculate_percentage()` | Empty ticket list (total 0, no division by zero) | `0, 0` | `0.0` | | |
+| FT01 | `clean_text()` | Mixed capitalization | `"Access"` | `"access"` | `"access"` | Yes |
+| FT02 | `clean_text()` | Surrounding spaces and uppercase | `"  HIGH "` | `"high"` | `"high"` | Yes |
+| FT03 | `clean_text()` | Missing value | `None` | `""` | `""` | Yes |
+| FT04 | `clean_text()` | Number instead of text | `3` | `"3"` | `"3"` | Yes |
+| FT05 | `is_missing()` | Missing value | `None` | `True` | `True` | Yes |
+| FT06 | `is_missing()` | Only spaces | `"   "` | `True` | `True` | Yes |
+| FT07 | `is_missing()` | Empty text | `""` | `True` | `True` | Yes |
+| FT08 | `is_missing()` | Normal text | `"Finance"` | `False` | `False` | Yes |
+| FT09 | `get_queue()` | Access, normal capitalization | `"Access"` | `"L1 Helpdesk"` | `"L1 Helpdesk"` | Yes |
+| FT10 | `get_queue()` | Software, lowercase | `"software"` | `"L1 Helpdesk"` | `"L1 Helpdesk"` | Yes |
+| FT11 | `get_queue()` | Infrastructure, uppercase | `"INFRASTRUCTURE"` | `"L2 Field Team"` | `"L2 Field Team"` | Yes |
+| FT12 | `get_queue()` | Hardware | `"Hardware"` | `"L2 Field Team"` | `"L2 Field Team"` | Yes |
+| FT13 | `get_queue()` | Finance with surrounding spaces | `" finance "` | `"Admin"` | `"Admin"` | Yes |
+| FT14 | `get_queue()` | General | `"General"` | `"Triage"` | `"Triage"` | Yes |
+| FT15 | `get_queue()` | Category not in the list | `"Printer"` | `"Triage"` | `"Triage"` | Yes |
+| FT16 | `get_queue()` | Missing category | `None` | `"Triage"` | `"Triage"` | Yes |
+| FT17 | `get_deadline_hours()` | High | `"High"` | `4` | `4` | Yes |
+| FT18 | `get_deadline_hours()` | Medium, lowercase | `"medium"` | `24` | `24` | Yes |
+| FT19 | `get_deadline_hours()` | Low, uppercase with spaces | `" LOW "` | `72` | `72` | Yes |
+| FT20 | `get_deadline_hours()` | Priority not in the list | `"Urgent"` | `0` | `0` | Yes |
+| FT21 | `get_deadline_hours()` | Missing priority | `None` | `0` | `0` | Yes |
+| FT22 | `format_deadline()` | High-priority deadline | `4` | `"4 hours"` | `"4 hours"` | Yes |
+| FT23 | `format_deadline()` | Medium-priority deadline | `24` | `"24 hours"` | `"24 hours"` | Yes |
+| FT24 | `format_deadline()` | Low-priority deadline | `72` | `"72 hours"` | `"72 hours"` | Yes |
+| FT25 | `format_deadline()` | No deadline set (BR4) | `0` | `"not set (priority must be reviewed)"` | `"not set (priority must be reviewed)"` | Yes |
+| FT26 | `calculate_percentage()` | Part of the total | `3, 15` | `20.0` | `20.0` | Yes |
+| FT27 | `calculate_percentage()` | Largest queue in the sample | `6, 15` | `40.0` | `40.0` | Yes |
+| FT28 | `calculate_percentage()` | All tickets in one queue | `15, 15` | `100.0` | `100.0` | Yes |
+| FT29 | `calculate_percentage()` | Queue with no tickets | `0, 15` | `0.0` | `0.0` | Yes |
+| FT30 | `calculate_percentage()` | Empty ticket list (total 0, no division by zero) | `0, 0` | `0.0` | `0.0` | Yes |
+| FT31 | `get_next_ticket_id()` | The 15 sample tickets (highest ID 1015) | `tickets` from `sample_tickets.py` | `1016` | `1016` | Yes |
+| FT32 | `get_next_ticket_id()` | Empty list | `[]` | `1` | `1` | Yes |
+| FT33 | `get_next_ticket_id()` | A ticket without an ID is skipped | `[{"ticket_id": 5}, {"category": "Access"}]` | `6` | `6` | Yes |
+
+For FT31, import the list first: `>>> from sample_tickets import tickets`, then call `get_next_ticket_id(tickets)`.
+
+### 3.3 Keyboard input (`main.py`)
+
+These tests check the `input()` part of the program: the yes/no question, the manual ticket, and how it is routed and counted. Run `python main.py` for each one and type the inputs in order; `(Enter)` means press Enter without typing anything.
+
+| Test ID | Scenario description | Keyboard input, in order | Expected result | Actual Result | Passed |
+|---|---|---|---|---|---|
+| MT01 | User does not add a ticket | `no` | Only the 15 sample tickets are processed; the summary matches section 5 | 15 tickets processed (1001 to 1015), no ticket 1016. Summary: L1 Helpdesk 4 (26.7%), L2 Field Team 3 (20.0%), Admin 2 (13.3%), Triage 6 (40.0%), total 15, needs review 5 [1011, 1012, 1013, 1014, 1015] | Yes |
+| MT02 | Manual ticket, lowercase category, uppercase priority | `yes` · `Password expired on laptop` · `access` · `HIGH` | Ticket **1016** is shown with `Category: access` and `Priority: HIGH`, routed to **L1 Helpdesk / 4 hours / Routed**. Summary: L1 Helpdesk 5 (31.2%), L2 Field Team 3 (18.8%), Admin 2 (12.5%), Triage 6 (37.5%), total 16, needs review 5 | Ticket 1016: Password expired on laptop · Category: access · Priority: HIGH → **L1 Helpdesk / 4 hours / Routed**. Summary: L1 Helpdesk 5 (31.2%), L2 Field Team 3 (18.8%), Admin 2 (12.5%), Triage 6 (37.5%), total 16, needs review 5 [1011, 1012, 1013, 1014, 1015] | Yes |
+| MT03 | Manual ticket with an unknown category | `yes` · `Scanner offline` · `Printer` · `Low` | Ticket 1016: **Triage / 72 hours / Needs review** (BR3). Summary: Triage 7 (43.8%), total 16, needs review 6, including 1016 | Ticket 1016: Scanner offline · Category: Printer · Priority: Low → **Triage / 72 hours / Needs review**. Summary: L1 Helpdesk 4 (25.0%), L2 Field Team 3 (18.8%), Admin 2 (12.5%), Triage 7 (43.8%), total 16, needs review 6 [1011, 1012, 1013, 1014, 1015, 1016] | Yes |
+| MT04 | Invalid answer to the question | `maybe` · `no` | Prints `Please answer yes or no.` and asks again; after `no`, the result is the same as MT01 | `Please answer yes or no.` printed once and the question asked again; after `no`: 15 tickets processed (1001 to 1015), no ticket 1016. Summary: L1 Helpdesk 4 (26.7%), L2 Field Team 3 (20.0%), Admin 2 (13.3%), Triage 6 (40.0%), total 15, needs review 5 [1011, 1012, 1013, 1014, 1015] | Yes |
+| MT05 | Uppercase answer and empty fields | `YES` · `(Enter)` · `(Enter)` · `(Enter)` | `YES` is accepted. Ticket 1016 shows `(missing)` for the description, category and priority, and is routed to **Triage / deadline not set / Needs review** (BR3, BR4). Needs review 6 | Ticket 1016: (missing) · Category: (missing) · Priority: (missing) → **Triage / not set (priority must be reviewed) / Needs review**. Summary: L1 Helpdesk 4 (25.0%), L2 Field Team 3 (18.8%), Admin 2 (12.5%), Triage 7 (43.8%), total 16, needs review 6 [1011, 1012, 1013, 1014, 1015, 1016] | Yes |
 
 ---
 
@@ -145,6 +165,9 @@ The course asks for each business rule to be tested with at least three differen
 | `route_ticket()` | TC01 to TC26 | `main.py` run (section 5) |
 | `format_deadline()` | FT22 to FT25 | `main.py` output ("Deadline:" lines) |
 | `calculate_percentage()` | FT26 to FT30 | `main.py` summary percentages (section 5) |
+| `get_next_ticket_id()` | FT31 to FT33 | MT02, MT03, MT05 (the manual ticket gets ID 1016) |
+| `ask_yes_or_no()` | — (needs the keyboard) | MT01 (no), MT02 and MT03 (yes), MT04 (invalid answer), MT05 (uppercase YES) |
+| `read_manual_ticket()` | — (needs the keyboard) | MT02, MT03, MT05 |
 
 ### 4.3 Queue × priority
 
@@ -161,17 +184,17 @@ Every queue is tested with every priority.
 
 ## 5. End-of-run summary check (`main.py`)
 
-`main.py` processes the 15 synthetic tickets in `sample_tickets.py` (IDs 1001 to 1015). Ticket 1015 has no `description` and no `priority` key at all. After `python main.py`, the output must show:
+`main.py` processes the 15 synthetic tickets in `sample_tickets.py` (IDs 1001 to 1015). Ticket 1015 has no `description` and no `priority` key at all. After `python main.py`, answering `no` to "Add a ticket manually?", the output must show:
 
 | Check | Expected | Tickets | Actual | Passed |
 |---|---|---|---|---|
-| L1 Helpdesk | 4 (26.7%) | 1001, 1002, 1007, 1010 | | |
-| L2 Field Team | 3 (20.0%) | 1003, 1004, 1008 | | |
-| Admin | 2 (13.3%) | 1005, 1009 | | |
-| Triage | 6 (40.0%) | 1006, 1011, 1012, 1013, 1014, 1015 | | |
-| **Total processed** | **15** | 1001 to 1015 | | |
-| Needs review | 5: [1011, 1012, 1013, 1014, 1015] | 1011 (unknown category), 1012 (Urgent), 1013 (missing priority), 1014 (both missing), 1015 (no description or priority key) | | |
-| Missing fields do not crash the program | The program finishes. Ticket 1015 shows `Ticket 1015: (missing)` and `Priority: (missing)` | 1015 | | |
+| L1 Helpdesk | 4 (26.7%) | 1001, 1002, 1007, 1010 | 4 (26.7%) | Yes |
+| L2 Field Team | 3 (20.0%) | 1003, 1004, 1008 | 3 (20.0%) | Yes |
+| Admin | 2 (13.3%) | 1005, 1009 | 2 (13.3%) | Yes |
+| Triage | 6 (40.0%) | 1006, 1011, 1012, 1013, 1014, 1015 | 6 (40.0%) | Yes |
+| **Total processed** | **15** | 1001 to 1015 | **15** | Yes |
+| Needs review | 5: [1011, 1012, 1013, 1014, 1015] | 1011 (unknown category), 1012 (Urgent), 1013 (missing priority), 1014 (both missing), 1015 (no description or priority key) | 5: [1011, 1012, 1013, 1014, 1015] | Yes |
+| Missing fields do not crash the program | The program finishes. Ticket 1015 shows `Ticket 1015: (missing)` and `Priority: (missing)` | 1015 | The program finished with no error. Ticket 1015 shows `Ticket 1015: (missing)` and `Priority: (missing)` | Yes |
 
 ---
 
@@ -181,7 +204,7 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 
 | Test ID | What happened | Cause | Fix applied | Re-test passed |
 |---|---|---|---|---|
-| | | | | |
+| — | No test failed in the run of 2026-10-12 (section 9) | — | — | — |
 
 ---
 
@@ -191,6 +214,8 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 - **General vs. unknown category (TC12 to TC14 vs. TC19 to TC21).** Both go to Triage, but only an unrecognized category is marked "Needs review", because General is a valid category.
 - **Missing values and missing keys (TC20, TC23, TC24, TC26, ticket 1015).** `clean_text()` turns `None` into empty text. `main.py` reads each field with `.get()`, so a key that is absent from the ticket also becomes `None` instead of stopping the program.
 - **Both unknown (TC25, TC26).** BR4 sets the deadline to 0; the queue is Triage and the status is "Needs review" either way.
+- **Rounding of percentages.** Python's `:.1f` formatting rounds an exact half to the nearest even digit, so 5 of 16 tickets (31.25%) is shown as 31.2% and 3 of 16 (18.75%) as 18.8%. The expected values in MT02 follow the program's real rounding.
+- **Typed values are kept as typed.** A manual ticket is displayed exactly as entered (MT02 shows `access` and `HIGH`), and BR0 cleans the values only for the rules.
 - **Test data only.** All tickets and test inputs are synthetic. No real people, companies or records are used.
 
 ---
@@ -203,7 +228,29 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 | 1.1 | 2026-09-29 | Supabase removed; capitalization ignored (BR0); 26 tests; summary check based on `main.py`. |
 | 1.2 | 2026-09-29 | Corrections accepted in the AI debugging cycle (AI log Entry 013): TC19 to TC21 now expect "Needs review" (BR3); 21 direct function tests added (FT01 to FT21); summary check updated for 15 tickets, including ticket 1015 without a description or priority key. |
 | 1.3 | 2026-09-29 | AI refactoring cycle (AI log Entry 015): 9 direct tests added for the new functions `format_deadline()` (FT22 to FT25) and `calculate_percentage()` (FT26 to FT30); the sample tickets now come from `sample_tickets.py`. All other expected results are unchanged, because the refactoring did not change the program's behavior. |
+| 1.4 | 2026-10-12 | Keyboard input added (Option A, AI log Entry 020): 3 tests for `get_next_ticket_id()` (FT31 to FT33) and 5 keyboard tests (MT01 to MT05); run instructions now say to answer `no` for the summary check. All earlier expected results are unchanged. |
+| 1.5 | 2026-10-12 | All tests executed: Actual Result and Passed filled in for the 26 routing tests, 33 function tests, 5 keyboard tests and 7 summary checks; no failures (section 6); test execution record added (section 9). No expected result changed. AI log Entry 021. |
 
 ---
 
-*During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to derive the test cases, coverage tables and run procedure from the team's business rules (BR0 to BR4), to update them after the AI debugging cycle, and to add tests for the functions created in the AI refactoring cycle. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*
+## 9. Test execution record
+
+| Item | Value |
+|---|---|
+| Date | 2026-10-12 |
+| Code version | The files in this repository after the keyboard-input change (AI log Entry 020): `main.py`, `calculations.py`, `validations.py`, `sample_tickets.py` |
+| Python version | 3.11.15 |
+| Executed by | Claude (AI assistant), at the team's request (AI log Entry 021), by running the real code. The results were not predicted or typed by hand |
+| Method | **3.1:** each row's inputs passed to `route_ticket()`; the returned dictionary written as `queue / deadline / status`. **3.2:** each function called with the row's input; `format_deadline()` imported from `main.py` with `no` typed at the question, as described in section 2. **3.3 and 5:** `python main.py` run once per test, with the listed keyboard input typed in order; the printed ticket block and summary written in Actual. A row is **Yes** only when the actual result is equal to the expected result (same value and same type for 3.2) |
+| Results | 3.1 routing: **26/26 passed** · 3.2 functions: **33/33 passed** · 3.3 keyboard: **5/5 passed** · 5 summary: **7/7 passed** |
+| Failures | None (section 6) |
+
+**Team verification.** Before the submission, at least one team member should re-run a sample of these tests on their own computer, following section 2 (suggested: TC16, TC22, FT25, FT30, MT02 and MT04), and confirm that the results are the same. Record the result below.
+
+| Date | Team member | Tests re-run | Same results? |
+|---|---|---|---|
+| | | | |
+
+---
+
+*During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to derive the test cases, coverage tables and run procedure from the team's business rules (BR0 to BR4), to update them after the AI debugging cycle, to add tests for the functions created in the AI refactoring cycle, to add tests for the keyboard input, and to execute all the tests and record their actual results (section 9). After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*
