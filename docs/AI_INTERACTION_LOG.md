@@ -96,9 +96,10 @@ and its missing there, including the project Plan?
 - Attached colour labels by card type (green data, purple ml, blue backend, yellow docs, orange presentation); label names must be set by hand because the connector cannot rename labels.
 - Created two cards in "🚧 Blocked / Questions": conflicts between the Project Plan and the Project Instructions (library list vs. beginner-level rule, notebook vs. .py modules, log file name, peer review date, data source), and the missing course material (ST1 Course Project deck, pandas slides, rubrics).
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review — record here which board changes the group kept, changed or reverted, and why._
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The new lists ("📌 To Do — Current Sprint" and "👀 In Review"), the summaries in the Project Plan and Syllabus cards, the "📘 Project Instructions" reference card, the Idea Decision cards moved to Done, the Sprint 0 cards, the sprint, ID reference, due date and checklist on every RA1/RA2 card, and the two cards in "🚧 Blocked / Questions". No change was reverted: the board shows no activity after 2026-09-29 other than the updates recorded in Entries 011 and 018. The label names were not set by hand; the labels still have colours only.
+**Rejected:** Nothing at the time. Part of the content was later replaced by team decisions: the NLP and machine-learning cards no longer match the first delivery (Entries 005, 007 and 008), and the pandas cards were archived (Entry 011).
+**Justification:** The board had to follow the Project Plan so the group had one place to see the sprints, the due dates and the indicators (ID1.x, ID2.x) for each task. The "conflicts" card was the most useful part: it showed that the Project Plan broke the course rules, which led to the alignment in Entry 005.
 
 ---
 
@@ -121,9 +122,10 @@ may you please allign with the course rules please
 - Proposed four business rules for the problem analysis (classification, label validation, routing, response deadline) — to be confirmed by the team.
 - Updated the Trello board (Project Plan card rewritten as the aligned version, card names, descriptions, due dates, checklists) and `PROJECT_INSTRUCTIONS.md` to v1.1 (sections 3, 5.5, 8, 10 and a change log in section 14).
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review — note in particular whether the group accepts dropping the web service and scikit-learn, and the proposed business rules._
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** Replacing every tool outside the course (FastAPI, Pydantic, scikit-learn, httpx, pytest, SQLite, Streamlit) with course content; `.py` modules instead of notebooks; synthetic data only; `docs/AI_INTERACTION_LOG.md` as the log name. Two of the four proposed business rules were kept, routing and response deadline, and became BR1 and BR2, with the queues and hours defined by the team (Entry 008).
+**Rejected:** For the first delivery: the keyword-rule classification and the label-validation rule (Entry 008: the category is provided with each ticket), and the pandas-based evaluation and `analysis.py` (ST3, outside the first delivery, Entry 007). The RA2 part of the plan (LLM through `requests`, CSV log, re-sequenced sprints) stays in the RA2 backlog, to be decided in RA2.
+**Justification:** The course requires beginner-level Python and course libraries only, so the original stack could not be part of a graded delivery. Classification was dropped because guessing the category from the description adds a second source of errors before routing even starts. With the category given, every test checks the routing and deadline rules themselves.
 
 ---
 
@@ -151,9 +153,10 @@ please abstract so then after we can work on it
 - Open points: an individual RA1 assessment appears in the syllabus with no date; rubrics, ST3 pandas decks and submission format still missing; `validation.py` (deck) vs. `validations.py` (instructions); the Project Plan PDF in `Trabalho/` is the pre-alignment version; log entries 004–005 still pending team review.
 
 **Verification:** Every quoted requirement, prompt and date was checked by text search against the extracted PDF text; the two diagram slides whose text did not extract (IPO model, project structure) were checked visually.
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review — confirm or change the proposed mapping in section 4 of the abstract (e.g. which rule is the graded `if`/`elif`/`else` rule)._
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The abstract as the working checklist for the first delivery, in particular the ST2 minimums (an `if`/`elif`/`else` rule tested with at least three inputs, the test table, list / dictionary / list of dictionaries, at least two single-responsibility functions, the two course prompts for debugging and refactoring, the five fields of each log entry). They were followed in Entries 008 to 016.
+**Rejected:** The proposed mapping that used the keyword classifier as the graded `if`/`elif`/`else` rule; routing and deadline (BR1 to BR4) are the graded rules instead (Entry 008). The ST3 parts (pandas, supporting data files) were left out, because the first delivery covers ST1 and ST2 only (Entry 007). The submission facts (date 03/10, format) were later replaced by the official brief (Entry 019).
+**Justification:** A checklist taken from the professor's own material made it possible to check each deliverable against a written requirement instead of guessing. The routing and deadline rules were chosen as the graded rules because they are the business decisions NexoTech actually needs, and they have clear outcomes that can be tested.
 
 ---
 
@@ -176,9 +179,10 @@ For this first delivery is just ST1 and ST2, whats the first step for now?
 - Flagged that the syllabus still lists ID1.3 (DataFrames) under RA1, to be confirmed with the professor.
 
 **Note:** the ST1/ST2-only scope was set by the student, not suggested by the AI.
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The recommended first step, the problem analysis, and the four decisions to make before it. The team made those decisions and supplied them in the prompt of Entry 008: the company name, the categories, the queue for each category and the deadline for each priority. Also accepted: a small hard-coded list of dictionaries instead of the 300–500-ticket dataset.
+**Rejected:** None. The open question about ID1.3 (DataFrames) was settled by the Summative Assessment brief, which assesses Study Themes 1 and 2 only (Entry 019).
+**Justification:** Analysing the problem before writing code is what ID1.1 asks for. Defining the rules first meant the code (Entry 010) and the tests (Entry 009) could both be written from the same approved rules. A small list is enough to test every rule, and it avoids pandas, which is ST3.
 
 ---
 
@@ -226,7 +230,7 @@ this keyword format: START, READ, CALCULATE, DISPLAY, END. It must include the c
 **Accepted:** All the AI's additions to the problem analysis: BR3 (unknown category → Triage), BR4 (unknown priority → no deadline, Triage, "Needs review"), the `status` field, the end-of-run summary, and single-ticket pseudocode with no loop keyword. `PROBLEM_ANALYSIS.md` v1.0 is approved.
 **Rejected:** Working out the category from keywords in the ticket description (the keyword-rule classifier proposed in Entry 005). For this delivery the category is provided explicitly with each ticket.
 **Justification:** Dropping keyword extraction keeps the first delivery small and stable, and focused on the ST1/ST2 constructs (decisions, data structures, functions). The additions were accepted because they give every possible input a defined result, and BR4 prevents an urgent ticket from receiving a wrong default deadline.
-**Team decision after review (architecture):** Tickets are stored in a Supabase table instead of a hard-coded list. The program fetches incoming tickets from the table, applies BR1–BR4, and writes the queue, deadline and status back to each record. This decision was made by the team, not proposed by the AI. Reason: _[team to fill in]_
+**Team decision after review (architecture):** Tickets are stored in a Supabase table instead of a hard-coded list. The program fetches incoming tickets from the table, applies BR1–BR4, and writes the queue, deadline and status back to each record. This decision was made by the team, not proposed by the AI. Reason: not recorded at the time; the decision was reversed in Entry 010, before any database code was written (confirmed in Entry 022).
 **Update:** reversed in Entry 010. Supabase was dropped, and tickets come from a local list of dictionaries.
 
 ---
@@ -369,9 +373,10 @@ Pandas and Supabase cards. Objective for this prompt:
   - No Supabase card existed on the board. "Create the GitHub repo" was left for the team to close after the push.
 - **AI cycles:** the AI declined to write simulated debugging and refactoring scenarios, because the AI log must record real prompts and real responses (ID1.4), and a simulated cycle would misrepresent how the code was developed. It prepared the real procedure instead: send the professor's debugging prompt with the three files, apply the accepted fixes and re-run the tests, then send the refactoring prompt and re-run the tests again, and log both cycles.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The git commands (the push worked, Entry 012), the `.gitignore` and the copy of the log into `docs/`. All the Trello moves and archives were kept; nothing has been changed back on the board since. Also accepted: the AI's refusal to write simulated debugging and refactoring scenarios, and its plan to run the real course prompts instead (done in Entries 013 to 016).
+**Rejected:** The simulated cycles that this prompt asked for. The team agreed with the AI that a simulated cycle would misrepresent how the code was developed.
+**Justification:** The log is graded evidence of how the AI was used (1.4, 2.4), so it must show real prompts and real responses. The real cycles found real problems that a made-up scenario would not have found: a missing key crashed the program (P1, Entry 013), and unknown categories were not flagged for review (P4).
 
 ---
 
@@ -397,9 +402,10 @@ based on our recent work (Python files, docs, AI log, and .gitignore).
   - The conflict commit message is in Portuguese; the project rule is English for commit messages.
   - `README.md` does not exist yet; it is required for the RA1 delivery.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The `.gitignore` fix (GitHub's Python template instead of the file with conflict markers), committed in `a91ae22` "Remove merge conflict markers from .gitignore and update AI log". The missing `README.md` was created in Entry 017.
+**Rejected:** Rewriting the commit message in Portuguese (`5555534`). It stays in the history.
+**Justification:** Changing a commit that is already pushed needs a force push to a shared repository, which can break the teammates' copies. One commit message does not affect the code or the documents, and every later commit is in English.
 
 ---
 
@@ -488,9 +494,10 @@ Objective:
 
 **Verification:** all 26 routing tests and 21 function tests were run against the new code and matched their expected results; `main.py` ran without errors and its output matched section 5 of the tests; the pseudocode's logic was simulated and matched `route_ticket()` for 54 category/priority combinations; the files compile, use ASCII only and contain no classes, comprehensions, lambdas or third-party imports.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** All the changes, pushed in commit `67f4b39` "Apply accepted debugging corrections and add function tests": every field read with `.get()`; the description shown through `show_value()`; `clean_text()` called inside `get_queue()` and `get_deadline_hours()`; the new `if`/`elif`/`else` status decision in `route_ticket()`; BR3 updated in `PROBLEM_ANALYSIS.md` v1.2; TC19 to TC21 changed to "Needs review" and FT01 to FT21 added in `TEST_CASES.md` v1.2; and test ticket 1015 (no `description` and no `priority` key).
+**Rejected:** None.
+**Justification:** The changes match the decisions recorded in Entry 013, and all 26 routing tests and 21 function tests passed afterwards. The order of the branches in the status decision was checked against the rules. BR4 (unknown priority) is tested before BR3 (unknown category), because only BR4 also changes the queue and the deadline, so a ticket with both problems ends in Triage with no deadline and "Needs review" (TC25, TC26). The `elif` only marks a Triage ticket for review when its category is not "general", because General is a valid category (TC12 to TC14 stay "Routed"). Ticket 1015 was kept because it proves, in the real run, that a missing key no longer crashes the program.
 
 ---
 
@@ -574,9 +581,10 @@ Provide the exact text for AI Log Entry 015 so I can paste it into the document.
 
 **Verification:** the program's output before and after the refactoring was compared byte for byte, for the 15 tickets and for an empty ticket list, and was identical. All 26 routing tests and 30 function tests passed. The files compile, use ASCII only, and contain no classes, comprehensions, lambdas, `__name__` guard or third-party imports.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** All the changes, pushed in commit `5eed02d` "Refactor main.py into functions and move sample tickets to their own module": `sample_tickets.py`, `main()`, `print_banner()`, `create_queue_counters()`, `format_deadline()`, `LINE_WIDTH`, `calculate_percentage()`, and the tests FT22 to FT30. The team approved it in the prompt of Entry 017: "The refactoring is approved and the code is safely on GitHub."
+**Rejected:** None.
+**Justification:** The refactoring had to keep the behavior unchanged. The output before and after was identical for the 15 tickets and for an empty list, and all 56 tests passed. The new tests matter: FT25 checks the "no deadline" branch of `format_deadline()`, and FT30 checks that `calculate_percentage(0, 0)` returns 0.0 instead of a division by zero.
 
 ---
 
@@ -606,9 +614,10 @@ must include:
 
 **Verification:** the run instructions were followed on a fresh clone of the GitHub repository; the example output blocks in the README match the program's real output exactly; the test example returns the value shown; the counts in the README (13 functions, 26 routing tests and 30 function tests) match the code and `TEST_CASES.md`; every relative link points to an existing file.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The README, pushed in commit `2cd8517` "Add README and update AI log". It has the four required parts: overview, problem, technologies and concepts, and run steps.
+**Rejected:** None.
+**Justification:** The run steps were tested on a fresh clone, so a teammate or the professor can run the program by following them exactly. The concepts table shows the grader where each course concept is used.
 
 ---
 
@@ -636,9 +645,10 @@ pending for this RA1 delivery based on our initial plan?
   5. Questions for the professor: whether ID1.3 (pandas, "supporting data files") is graded in this delivery; the date of the individual RA1 assessment; the submission format.
   6. The submission itself (by 03/10) and the Trello cards "Create the GitHub repo", "Document AI usage during development" and "Assemble the RA1 case study".
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The Trello update (the AI-cycles card is in Done, with a comment pointing to Entries 013 to 016) and the list of pending items, which became the work plan for Entries 019 to 021: test results, log reviews, team names. The team members' names were added to the README later, in commit `3be1fe9`.
+**Rejected:** None. The 03/10 date in item 6 was replaced by 17/10 when the official brief was published (Entry 019).
+**Justification:** A final check against the plan found gaps that would have cost points, such as the empty Actual Result column (2.3) and the pending reviews (1.4, 2.4).
 
 ---
 
@@ -672,7 +682,7 @@ please abstract the content from the pdf file so we can allign the project to it
 *Team review, given in the prompt of Entry 020:*
 **Accepted:** Option A for the `input()` requirement (one ticket typed at the keyboard), as the AI recommended.
 **Rejected:** Option B (the hours-remaining calculation) was not chosen.
-**Justification:** _[team to fill in]_ (the AI recommended A because it adds no new business rule, and answering "no" keeps the current results and tests valid). The rest of the submission plan is still open.
+**Justification** (confirmed in Entry 022): Option A was chosen because it meets the `input()` requirement (1.3) without adding a new business rule. Option B would need an "Overdue" rule with its own boundaries (what happens at exactly 0 hours remaining?), new tests and an updated analysis, a few days before the deadline. With A, answering "no" keeps every earlier result and test valid, so already-approved work cannot break.
 
 ---
 
@@ -705,9 +715,10 @@ First, lets follow with A
 
 **Verification:** answering "no" gives output identical to the previous version except for the question line; all 26 routing tests and 33 function tests pass; MT01–MT05 were run with the listed keyboard inputs and matched their expected results; the README's example output matches the program; the pseudocode still uses only the allowed keywords; the files compile, use ASCII only, and contain no classes, comprehensions or third-party imports.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The keyboard input (`ask_yes_or_no()`, `read_manual_ticket()`, `get_next_ticket_id()`) and the four additions: the validated yes/no answer, the calculated ticket ID, the prompts that list the valid options, and the typed values kept as typed for display. The team asked for these files to be applied to the local folder in the prompt of Entry 021 and pushed them in commit `b6bff8d`.
+**Rejected:** None.
+**Justification:** Typing the ID would mean converting text to `int`, which crashes on a letter, and could create a duplicate ID, the problem the team chose not to handle with a rule (P3, Entry 013). Calculating it (highest ID + 1) avoids both. The `while` loop means the program never guesses what an unclear answer meant. Listing the options in the prompts means fewer typing mistakes, so fewer tickets end up in "Needs review". Keeping the typed values matches BR0: the original value is shown, and only the rules use the cleaned value.
 
 ---
 
@@ -747,8 +758,49 @@ deadline. Instructions:
 
 **Verification:** the rewritten files compile; `python main.py` with the answer `no` gives the summary in the README; every test row has an Actual Result and a Passed value; the pseudocode still uses only the allowed keywords; the files use no classes, comprehensions, lambdas or third-party imports.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+*Team review, confirmed on 2026-10-12 (text drafted by the AI in Entry 021 and accepted by the team in Entry 022):*
+**Accepted:** The files applied to the local folder and pushed in commit `b6bff8d`: the keyboard input, section 0 of `PROBLEM_ANALYSIS.md`, the README assessment map, and the test results recorded in `TEST_CASES.md`. Also the review drafts, which the team chose to use in Entry 022.
+**Rejected:** None.
+**Justification:** The test results were kept because they come from running the real code, not from typing expected values by hand. The team can still add its own re-run in the verification table of `TEST_CASES.md` §9.
+
+---
+
+## Entry 022 — 2026-10-12 — Trello update and submission readiness check
+
+**Prompt type:** Zero-shot, task execution and verification (tool use: Trello connector; git clone of the public repository; connected project folder)
+**Goal:** Close the remaining RA1 cards on Trello and confirm that the repository is ready to be submitted as the Summative Assessment (LO 1).
+
+**Prompt used:**
+```
+Context: The teammates' names are in the README, the AI logs are fully updated and confirmed, and
+the final git push was successful. Objective: Please move the remaining RA1 cards on Trello to
+'Done' and confirm that we are fully ready to submit the GitHub URL for the ST1/ST2 summative
+assessment.
+```
+
+**Relevant AI response (summary):**
+- **Repository check (fresh clone of `main`):** the push worked (commits `b6bff8d` and `3be1fe9`). README section 9 lists the four team members. The code, `PROBLEM_ANALYSIS.md` and `TEST_CASES.md` are the versions from Entry 021, the program runs, and every test row has an actual result.
+- **Gap found:** `docs/AI_INTERACTION_LOG.md` on GitHub is identical to the version written in Entry 021, so the team reviews had not been pasted in. Thirteen entries still show "_pending team review_": 004, 005, 006, 007, 011, 012, 014, 016, 017, 018, 020 and 021, plus the Entry 019 justification. The Entry 008 Supabase reason is also still open. Four of these (014, 016, 019 and 020) are listed in the README assessment map for 1.4 and 2.4. The team verification table in `TEST_CASES.md` §9 is also still empty. Conclusion: not yet fully ready to submit.
+- **Trello, after reading the board:**
+  - Moved to Done and marked complete, each with a comment: "Create the GitHub repo (support-triage)" and "Obtain missing course material" (the rubric arrived with the Summative Assessment brief).
+  - "Assemble the RA1 case study (code + docs)" moved to In Progress RA1. Due date changed to 17/10, the completed checklist items ticked, the submission item renamed to 17/10, and the ST3/RA2 items left unchecked as out of scope.
+  - "Document AI usage during development" kept in In Progress RA1, with three items ticked and a new item for the pending reviews.
+  - Not moved, because there is no evidence the work was done: "Peer review (code, analyses, tests)" and "Assign roles and set the weekly check-in".
+- **Flagged for the team:** the Trello card asks for the official Portuguese wording of the PUCPR declaration, while the project files use the English version, following the English-only rule.
+
+**Follow-up question asked by the AI, and the team's answer:**
+```
+Question: The AI log you pushed to GitHub still has the old placeholders: 13 entries say "pending
+team review", including 014, 016, 019 and 020, which the README points the grader to for 1.4 and
+2.4. It looks like the reviews were never saved into the log file. How do you want to fill them?
+Options: "Paste the drafts (Recommended)" / "We'll paste our own"
+Answer: Paste the drafts (Recommended)
+```
+- **After the answer:** the drafts from `LOG_REVIEW_DRAFTS.md` were pasted into Entries 004, 005, 006, 007, 011, 012, 014, 016, 017, 018, 020 and 021, the Entry 019 justification and the Entry 008 reason, each marked as confirmed on 2026-10-12. The "[confirm]" notes were removed: where the evidence answered them, the answer was written in (the board labels were never renamed; the names were added in commit `3be1fe9`); where it did not, the claim was dropped. The optional extra sentence for Entry 010 (§3 of the drafts) was not added, because it would change a justification written in the team's own words.
+
+*Team review, given in the answer recorded above:*
+**Accepted:** Pasting the review drafts into this log as the team's reviews. The Trello changes were not reviewed separately.
+**Rejected:** Writing the reviews again by hand (the other option offered).
+**Justification:** The decision is the team's answer above; no further reason was given.
 
 ---
