@@ -218,7 +218,9 @@ This first delivery covers study topics **ST1** (computational thinking, Python 
 ## 9. Team
 
 - João Vitor da Silva de Quadros
-- _[add the other team members here]_
+- Marlon Zanelato Filho
+- Nicolas Martinski de Miranda
+- Wesley Lopes de Faria Geraldo
 
 ## 10. License
 
