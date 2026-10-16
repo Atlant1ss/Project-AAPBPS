@@ -253,10 +253,16 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 
 **Team verification.** Before the submission, at least one team member should re-run a sample of these tests on their own computer, following section 2 (suggested: TC16, TC22, FT25, FT30, MT02 and MT04), and confirm that the results are the same. Record the result below.
 
-| Date | Team member | Tests re-run | Same results? |
-|---|---|---|---|
-| | | | |
+| Date | Team member | Tests re-run | Same results? | Results |
+|---|---|---|---|---|
+| 2026-10-16 | Marlon Zanelato Filho | TC16 | Yes | Ticket 1016: ACCESS Category: Access Priority: low;Queue: L1 Helpdesk Deadline: 72 hours Status: Routed |
+| 2026-10-16 | Marlon Zanelato Filho | TC22 | Yes | Ticket 1016: (missing) Category: Access Priority: Urgent Queue: Triage Deadline: not set (priority must be reviewed) Status: Needs review |
+| 2026-10-16 | Marlon Zanelato Filho | FT25 | Yes | the command used before main() was format_deadline(4); Ticket 1016: ACCESS Category: Access Priority: low Queue: L1 Helpdesk Deadline: 72 hours Status: Routed |
+| 2026-10-16 | Marlon Zanelato Filho | FT30 | Yes | the printed result was 0.0 |
+| 2026-10-16 | Marlon Zanelato Filho | MT02 | Yes | Ticket 1016: (missing) Category: access Priority: HIGH Queue: L1 Helpdesk Deadline: 4 hours Status: Routed |
+| 2026-10-16 | Marlon Zanelato Filho | MT04 | Yes | Add a ticket manually? (yes/no): maybe Please answer yes or no. |
 
+all tests were done restarting the program to see if the changes done would save on the file
 ---
 
 *During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to derive the test cases, coverage tables and run procedure from the team's business rules (BR0 to BR4), to update them after the AI debugging cycle, to add tests for the functions created in the AI refactoring cycle, to add tests for the keyboard input, to execute all the tests and record their actual results (section 9), and to add and execute the boundary tests TC27 to TC30. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*
