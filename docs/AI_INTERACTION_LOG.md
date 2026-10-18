@@ -8,6 +8,9 @@
 > PUCPR Resolution 274/2024 — mandatory disclosure statement (to be included in every delivered artifact):
 > "During the preparation of this [CONTENT TYPE], the author(s) used [Claude, Anthropic, claude-opus-5] to [REASONS]. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content."
 
+## Team reflection (written by the team without AI)
+We chose Option A for the manual input to avoid creating complex logic rules right before the deadline. We also implemented the .get() method to prevent the system from crashing on missing keys.
+
 ---
 
 ## Entry 001 — 2026-09-18 — Course material comprehension
