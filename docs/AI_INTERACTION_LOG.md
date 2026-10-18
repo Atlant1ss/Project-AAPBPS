@@ -931,9 +931,32 @@ when the local files are updated with these specific fixes.
 
 ---
 
-## Entry 026 — 2026-10-12 — Final repository check, rubric re-evaluation, and Trello closure
+## Entry 026 — 2026-10-17 — Applying the last assistant-side fixes (rounding range, §9 wording, log disclosure)
 
-**Prompt type:** Role prompting and verification request (tool use: git clone of the public repository; Trello connector; connected project folder)
-**Goal:** Verify the final GitHub push on `main`, re-evaluate the updated repository against all eight criteria of the Summative Assessment rubric (LO 1), and move the last RA1 Trello cards to `Done`.
+**Prompt type:** Zero-shot, task execution on a team decision (connected project folder)
+**Goal:** Apply steps 4 and 5 from Entry 025.
+
+**Team decision supplied in the prompt (not made by the AI):** apply steps 4 and 5. The team does the steps the AI must not do for it: the team reflection, the manual test re-run table in `TEST_CASES.md` §9, and the reviews of the pending log entries.
 
 **Prompt used:**
+```
+Context: The Portuguese log is gone and the English version is confirmed. Objective: Please proceed
+immediately with applying your proposed steps 4 and 5 (the rounding fix in PROBLEM_ANALYSIS, the §9
+wording polish, and filling in the log's disclosure statement template) to my local files. Next
+Steps: I will concurrently handle the human Team Reflection, the manual test re-run table, and the
+pending log reviews.
+```
+
+**Relevant AI response (summary):**
+- **`docs/PROBLEM_ANALYSIS.md` v1.7:** §2.4 now says the four rounded shares can differ from 100% by up to 0.2 percentage points (99.8% to 100.2%). This replaces "99.9% or 100.1%", which was wrong. The range was checked by calculating every possible split of 1 to 120 tickets across the four queues. The worked example (100.1 with 16 tickets) stays. No business rule changed.
+- **`docs/TEST_CASES.md` v1.7:** the §9 "Date" row no longer repeats the date. The "Executed by" row now names both AI runs: Entry 021 for TC01–TC26, FT01–FT33, MT01–MT05 and §5, and Entry 024 for TC27–TC30. It also points to the team verification table below it. That table was not touched. No test or result changed.
+- **This log:** the empty disclosure template at the top was replaced by the filled-in statement for this log.
+- Entry 024's own text still says "99.9% or 100.1%", because it records what was written at the time. The correction is recorded here.
+
+**Verification:** the three files were staged from the team's folder just before editing, so the team's work in progress was kept. Only the lines listed above changed, which a diff against the staged copies confirmed.
+
+**Accepted:** The three fixes: the corrected rounding range in `PROBLEM_ANALYSIS.md` §2.4 (v1.7), the §9 wording in `TEST_CASES.md` (v1.7), and the filled-in disclosure statement at the top of this log.
+**Rejected:** None.
+**Justification:** The old range ("99.9% or 100.1%") was mathematically wrong; §9 has to say which run produced which results; and the log needed its own completed PUCPR statement.
+
+---
