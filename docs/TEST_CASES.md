@@ -255,7 +255,12 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 
 | Date | Team member | Tests re-run | Same results? |
 |---|---|---|---|
-| | | | |
+| 10-17-2026 | Wesley Lopes | TC16 | yes |
+| 10-17-2026 | Wesley Lopes | TC22 | yes |
+| 10-17-2026 | Wesley Lopes | FT25 | yes |
+| 10-17-2026 | Wesley Lopes | FT30 | yes |
+| 10-17-2026 | Wesley Lopes | MT02 | yes |
+| 10-17-2026 | Wesley Lopes | MT04 | yes |
 
 ---
 
