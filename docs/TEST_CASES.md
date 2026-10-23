@@ -263,6 +263,16 @@ Fill in one row per failed test. After the fix, re-run the test and record the r
 | 2026-10-16 | Marlon Zanelato Filho | MT04 | Yes | Add a ticket manually? (yes/no): maybe Please answer yes or no. |
 
 all tests were done restarting the program to see if the changes done would save on the file
+
+| Date | Team member | Tests re-run | Same results? |
+|---|---|---|---|
+| 10-17-2026 | Wesley Lopes | TC16 | yes |
+| 10-17-2026 | Wesley Lopes | TC22 | yes |
+| 10-17-2026 | Wesley Lopes | FT25 | yes |
+| 10-17-2026 | Wesley Lopes | FT30 | yes |
+| 10-17-2026 | Wesley Lopes | MT02 | yes |
+| 10-17-2026 | Wesley Lopes | MT04 | yes |
+
 ---
 
 *During the preparation of this document, the author(s) used Claude (Anthropic, model claude-opus-5) to derive the test cases, coverage tables and run procedure from the team's business rules (BR0 to BR4), to update them after the AI debugging cycle, to add tests for the functions created in the AI refactoring cycle, to add tests for the keyboard input, to execute all the tests and record their actual results (section 9), and to add and execute the boundary tests TC27 to TC30. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content.*

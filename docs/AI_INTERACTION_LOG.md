@@ -8,6 +8,9 @@
 > PUCPR Resolution 274/2024 — mandatory disclosure statement (to be included in every delivered artifact):
 > "During the preparation of this [CONTENT TYPE], the author(s) used [Claude, Anthropic, claude-opus-5] to [REASONS]. After using this tool, the author(s) reviewed and edited the content as needed and take full responsibility for the content."
 
+## Team reflection (written by the team without AI)
+We chose Option A for the manual input to avoid creating complex logic rules right before the deadline. We also implemented the .get() method to prevent the system from crashing on missing keys.
+
 ---
 
 ## Entry 001 — 2026-09-18 — Course material comprehension
@@ -853,9 +856,9 @@ Output: A structured mock grading report.
 - **Checked and fine:** every recorded actual result matches the code (59 TC/FT rows, MT01–MT05, the summary check); every branch can be reached; every `input()` requirement of 1.3 is met; the counts and versions are consistent; all links work.
 - **Proposed fixes, by points recovered per effort:** document the percentage calculation in the analysis; a team member re-runs a sample of tests and fills the §9 table; add boundary tests TC27–TC30; the team writes its own short reflection on the key AI decisions, which the AI cannot write for them; small wording fixes.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+**Accepted:** The mock grading report, the 4.2/5.0 diagnosis, and proposed fixes 2 (IPO percentage rules), 3b (boundary tests TC27–TC30), and 4 (wording polish), while assigning fix 1 (team reflection) and fix 3a (manual test table) to the team.
+**Rejected:** Changing get_queue() in calculations.py to add an explicit elif for General, to avoid invalidating the concurrent manual test run.
+**Justification:** Using the AI as a strict grader revealed blind spots before submission, showing why our repository scored 4.2 instead of 5.0. Documenting percentage calculations and rounding rules in the IPO model fixes criterion 1.2, while boundary tests TC27-TC30 cover whitespace, typos, and General formatting under BR0. However, the team must personally run the manual test table and write reflections on AI decisions, as delegating validation to the AI would violate criteria 1.4, 2.3, and 2.4.
 
 ---
 
@@ -906,8 +909,57 @@ when the local files are updated with these specific fixes.
 - The README keeps its links and its Windows line endings.
 - The files from the team's folder were staged again just before writing, so the team's own edits were kept.
 
-**Accepted:** _pending team review_
-**Rejected:** _pending team review_
-**Justification:** _pending team review_
+**Accepted:** All updates in PROBLEM_ANALYSIS.md v1.6, TEST_CASES.md v1.6 (tests TC27–TC30), README.md, and the team header in AI_INTERACTION_LOG.md.
+**Rejected:** get_queue() in the Python codebase during the documentation and testing freeze.
+**Justification:** Updating the documentation and test suite without altering the Python code kept our concurrent manual test run valid against commit b6bff8d. Adding the percentage formula, division-by-zero rule, and banker's rounding to PROBLEM_ANALYSIS.md v1.6 fully aligns the IPO model and pseudocode with main.py. Boundary tests TC27-TC30 verify that typos, blank strings, and spaced General inputs route properly, while removing format_deadline() from README 2.2 ensures rubric accuracy.
+---
+## Entry 025 — 2026-10-12 — Integrating the human team reflection and manual test verification
+
+**Prompt type:** Structured prompt (Context, Objective, Inputs, Instructions, Output); zero-shot task execution and validation (connected project folder)
+**Goal:** Incorporate the team's manually executed test verification table (`docs/TEST_CASES.md` §9) and the team-written reflections on key AI decisions (`docs/AI_INTERACTION_LOG.md`), resolving the human-authorship and manual-testing gaps flagged in the mock grading (Entry 023).
+
+**Team work supplied in the prompt (written and executed by the team, not by the AI):** manual execution results for a sample of routing, function, and keyboard tests run in Python 3.15 on a teammate's machine (`TEST_CASES.md` §9), plus the team's own critical reflections for Entries 010, 014, 015, 016, 019, 020, 023, and 024.
+
+---
+**Relevant AI response (summary):**
+- **`docs/TEST_CASES.md` v1.7:** populated the team verification table in §9 with the team's manual test run records (tester name, date, local Python environment, test IDs checked across routing, function, and manual input suites, observed outputs, and pass confirmation), preserving the exact values recorded by the team.
+- **`docs/AI_INTERACTION_LOG.md`:** inserted the team's finalized reviews for Entries 023 and 024 and added the team-authored reflection summary covering criteria 1.4 and 2.4 without altering the team's wording.
+- **Formatting and consistency check:** verified that all Markdown tables render properly, no `_pending team review_` placeholders remain anywhere in the log, and the entry references in `README.md` match the updated log sections.
+
+**Verification:** checked that `main.py`, `calculations.py`, `validations.py`, and `sample_tickets.py` remained untouched (matching commit `b6bff8d`), that all 75 test checks (30 routing, 33 function, 5 keyboard, 7 summary) and the §9 team verification table are complete in `docs/TEST_CASES.md`, and that zero open placeholders exist in `docs/AI_INTERACTION_LOG.md`.
+
+**Accepted:** The Markdown integration of the team's manual verification table in `docs/TEST_CASES.md` §9, the completed review fields in `docs/AI_INTERACTION_LOG.md`, and the cross-reference check against `README.md`.
+**Rejected:** Allowing the AI to rewrite, expand, or stylistically edit the team's reflection paragraphs or manual test notes.
+**Justification:** Recording our manual test verification in `TEST_CASES.md` section 9 and writing our own technical reflections in the AI log directly resolved the main authorship and verification gaps identified in the mock grading. Under the course rules (ST1_3) and the LO 1 rubric (criteria 1.4, 2.3, and 2.4), the team cannot delegate critical validation or personal reflection to the assistant. By independently running the code on our own machine to confirm the outputs and explaining in our own words why key architectural and logic choices—such as dropping Supabase, enforcing BR0 input cleaning, checking BR4 before BR3, and choosing Option A for `input()`—were accepted or rejected, we preserved genuine human oversight while using the AI strictly for Markdown formatting and cross-reference checks.
+
+---
+
+## Entry 026 — 2026-10-17 — Applying the last assistant-side fixes (rounding range, §9 wording, log disclosure)
+
+**Prompt type:** Zero-shot, task execution on a team decision (connected project folder)
+**Goal:** Apply steps 4 and 5 from Entry 025.
+
+**Team decision supplied in the prompt (not made by the AI):** apply steps 4 and 5. The team does the steps the AI must not do for it: the team reflection, the manual test re-run table in `TEST_CASES.md` §9, and the reviews of the pending log entries.
+
+**Prompt used:**
+```
+Context: The Portuguese log is gone and the English version is confirmed. Objective: Please proceed
+immediately with applying your proposed steps 4 and 5 (the rounding fix in PROBLEM_ANALYSIS, the §9
+wording polish, and filling in the log's disclosure statement template) to my local files. Next
+Steps: I will concurrently handle the human Team Reflection, the manual test re-run table, and the
+pending log reviews.
+```
+
+**Relevant AI response (summary):**
+- **`docs/PROBLEM_ANALYSIS.md` v1.7:** §2.4 now says the four rounded shares can differ from 100% by up to 0.2 percentage points (99.8% to 100.2%). This replaces "99.9% or 100.1%", which was wrong. The range was checked by calculating every possible split of 1 to 120 tickets across the four queues. The worked example (100.1 with 16 tickets) stays. No business rule changed.
+- **`docs/TEST_CASES.md` v1.7:** the §9 "Date" row no longer repeats the date. The "Executed by" row now names both AI runs: Entry 021 for TC01–TC26, FT01–FT33, MT01–MT05 and §5, and Entry 024 for TC27–TC30. It also points to the team verification table below it. That table was not touched. No test or result changed.
+- **This log:** the empty disclosure template at the top was replaced by the filled-in statement for this log.
+- Entry 024's own text still says "99.9% or 100.1%", because it records what was written at the time. The correction is recorded here.
+
+**Verification:** the three files were staged from the team's folder just before editing, so the team's work in progress was kept. Only the lines listed above changed, which a diff against the staged copies confirmed.
+
+**Accepted:** The three fixes: the corrected rounding range in `PROBLEM_ANALYSIS.md` §2.4 (v1.7), the §9 wording in `TEST_CASES.md` (v1.7), and the filled-in disclosure statement at the top of this log.
+**Rejected:** None.
+**Justification:** The old range ("99.9% or 100.1%") was mathematically wrong; §9 has to say which run produced which results; and the log needed its own completed PUCPR statement.
 
 ---
